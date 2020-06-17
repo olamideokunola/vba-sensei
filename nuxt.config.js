@@ -61,7 +61,7 @@ export default {
     interval: 2000,
   },
   axios: {
-    baseURL: 'http://192.168.43.6:8000/bizops/'
+    baseURL: 'http://165.227.94.31:8000/bizops/'
   },
   router: {
     middleware: ['auth']
