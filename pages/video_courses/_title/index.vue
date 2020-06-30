@@ -54,7 +54,7 @@ export default {
             return video_courses.value.find((video_course) => video_course.title === $route.params.title)
         })
         
-        const current_video = ref('Programming_Fundamentals_1.mp4')
+        const current_video = ref('Setting_up_the_Environment_1.mp4')
 
         const lesson_video_title = ref('')
 
@@ -77,6 +77,12 @@ export default {
             toggleLessonBkg(id, lesson.title)
         }
 
+        // const {   
+        //     getDefaultVideo,
+        //     setCurrentVideo, 
+        //     getVideoCourses,
+        //     getVideoCourse,
+        // } = useVideoLessons($store)
 
         const toggleLessonBkg = (id, title) => {
             bkgIsActive.value = !bkgIsActive.value
