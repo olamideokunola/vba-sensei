@@ -32,7 +32,7 @@ export default {
           username: loginInfo.email,
           password: loginInfo.password
         }
-      }).then(() => alert('Logged In!'))
+      }) //.then(() => alert('Logged In!'))
       // debugger
     }
   }

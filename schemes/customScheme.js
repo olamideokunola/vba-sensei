@@ -28,7 +28,7 @@ export default class CustomScheme extends LocalScheme {
       roles: ['user']
     }
 
-    alert('Custom user set: ' + customUser.firstname)
+    // alert('Custom user set: ' + customUser.firstname)
 
     // Set the custom user
     // The `customUser` object will be accessible through `this.$auth.user`
