@@ -43,7 +43,24 @@ export default {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    '@nuxtjs/firebase',
+    {
+      config: {
+        apiKey: 'AIzaSyBvQ1QlHAwZ91Vk7Hg2w2d1mzaUdbv62gs',
+        authDomain: 'vba-sensei.firebaseapp.com',
+        projectId: 'vba-sensei',
+        storageBucket: 'vba-sensei.appspot.com',
+        messagingSenderId: '487786726058',
+        appId: '1:487786726058:web:49c009d2171e6de44ac6d3',
+        measurementId: 'G-GSS4RP019D'
+      },
+      services: {
+        auth: true, // Just as example. Can be any other service.
+        database: true,
+        functions: true,
+      }
+    }
   ],
   /*
   ** Build configuration
@@ -66,32 +83,47 @@ export default {
   router: {
     middleware: ['auth']
   },
+
+  // Firebase Auth:
   auth: {
-    strategies: {
-      local: {
-        endpoints: {
-          login: { url: '/login/', method: 'post', propertyName: 'token' },
-          // logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/users/', method: 'get', propertyName: 'user' }
-        },
-        tokenRequired: true,
-        tokenType: 'bearer',
-        globalToken: true,
-        // autoFetchUser: true
-      },
-      customStrategy: {
-        _scheme: '~/schemes/customScheme',
-        endpoints: {
-          login: { url: '/login/', method: 'post', propertyName: 'token' },
-          logout: false, // { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/users/', method: 'get', propertyName: 'user' }
-        },
-        tokenRequired: true,
-        tokenType: 'bearer',
-        globalToken: true,
-        // autoFetchUser: true
-      }
+    persistence: 'local', // default
+    initialize: {
+      onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
+      onAuthStateChangedAction: 'onAuthStateChangedAction',
+      subscribeManually: false
     },
+    ssr: false, // default
+    emulatorPort: 9099,
+    emulatorHost: 'http://localhost',
+  },
+  
+  // Nuxt Auth:
+  // auth: {
+  //   strategies: {
+  //     local: {
+  //       endpoints: {
+  //         login: { url: '/login/', method: 'post', propertyName: 'token' },
+  //         // logout: { url: '/api/auth/logout', method: 'post' },
+  //         user: { url: '/users/', method: 'get', propertyName: 'user' }
+  //       },
+  //       tokenRequired: true,
+  //       tokenType: 'bearer',
+  //       globalToken: true,
+  //       // autoFetchUser: true
+  //     },
+  //     customStrategy: {
+  //       _scheme: '~/schemes/customScheme',
+  //       endpoints: {
+  //         login: { url: '/login/', method: 'post', propertyName: 'token' },
+  //         logout: false, // { url: '/api/auth/logout', method: 'post' },
+  //         user: { url: '/users/', method: 'get', propertyName: 'user' }
+  //       },
+  //       tokenRequired: true,
+  //       tokenType: 'bearer',
+  //       globalToken: true,
+  //       // autoFetchUser: true
+  //     }
+  //   },
     redirect: {
       login: '/signin',
       logout: '/',
@@ -99,4 +131,4 @@ export default {
       home: '/'
     }
   }
-}
+
