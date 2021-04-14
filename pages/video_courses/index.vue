@@ -72,11 +72,124 @@ import {
   useFetch,
   useContext,
   ref,
-  computed
+  computed,
+  useAsync
 } from 'nuxt-composition-api'
 
 export default {
-    setup(props, { root: { $store, $router, $route}}) {
+    middleware: 'authenticated',
+    setup(props, { root: { $store, $router, $route, $fire}}) {
+
+        const courses = ref([])
+        const levelsFromDB = ref([])
+        const lessonsFromDB = ref([])
+
+        useAsync(async() => {
+            // alert('in async 1!')
+            // Load courses and add to store
+            const coursesRef = $fire.database.ref('courses')
+            const coursesSnapshot = await coursesRef.once('value')
+
+            // alert('in async, courses loaded!')
+
+            // Load levels
+            const levelsRef = $fire.database.ref('levels')
+            const levelsSnapshot = await levelsRef.once('value')
+
+            levelsSnapshot.forEach((levelSnapshot) => {
+                var levelkey = levelSnapshot.key
+                var levelvalue = levelSnapshot.val()
+
+                // alert('in async, level id is: ' + levelkey + ', title is: ' + levelvalue.title)
+
+                levelsFromDB.value.push({
+                    id: levelkey,
+                    title: levelvalue.title
+                })
+
+                // alert('level added, with key: ' + levelkey + ', is ' +  levelsFromDB.value[levelkey].title)
+            })
+
+            levelsFromDB.value.forEach((level) => {
+
+                // alert('in async, showing levels content, id is: ' + level.id + ', title is: ' + level.title)
+
+            })
+
+            
+            // alert('in async, levels loaded!')
+
+            // Load lessons
+            const lessonsRef = $fire.database.ref('lessons')
+            const lessonsSnapshot = await lessonsRef.once('value')
+        
+            lessonsSnapshot.forEach((childSnapshot) => {
+                var childKey = childSnapshot.key
+                var childValue = childSnapshot.val()
+
+                lessonsFromDB.value.push({
+                    id: childSnapshot.key,
+                    title: childSnapshot.val().title
+                })
+            })
+
+            // alert('in async, lessons loaded!')
+
+            // Get courses from database
+            coursesSnapshot.forEach((childSnapshot) => {
+                var childKey = childSnapshot.key
+                var childValue = childSnapshot.val()                
+
+                // Get keys of lessons of courses, using the lesson indexes 
+                var courselessonKeys = []
+                var lessonsSnapshot = childSnapshot.child('2')
+                lessonsSnapshot.forEach((childlessonSnapshot) => {
+                    var lessonChildKey = childlessonSnapshot.key
+                    var lessonChildValue = childlessonSnapshot.val()
+                    if(lessonChildValue)
+                    {
+                        courselessonKeys.push(lessonChildKey)
+                    }
+                })
+
+                var courseObj = childValue
+                courseObj.lessons = []
+                
+                // Add lessons to course using keys
+                lessonsFromDB.value.forEach((lesson) => {
+                    courselessonKeys.forEach((lessonKey) => {
+                        if(lesson.id == lessonKey)
+                        {
+                            courseObj.lessons.push()
+                        }
+                    })
+                })
+
+                // alert('in async, course: ' + courseObj.title)
+                // alert('in async, course level: ' + courseObj.level)
+
+                // Get level title
+                var levelTitle = levelsFromDB.value.find((level) => level.id === courseObj.level).title
+                courseObj.level = levelTitle
+                
+                courses.value.push(courseObj)
+                // alert('xxxxxxxxxCourse is ' + courseObj.title)
+            }) 
+
+            // Set Level
+
+            // alert('about to save to store!')
+
+            courses.value.forEach((course) => {
+               // alert('Course description ' + course.description)
+            })
+
+            // Save to store
+            $store.dispatch('video_courses/saveCoursesToStore', { 
+                'courses': courses.value 
+            })
+        })
+
         const video_courses = ref($store.state.video_courses.video_courses)
         const levels = $store.state.video_courses.levels
 
