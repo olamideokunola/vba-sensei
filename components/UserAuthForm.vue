@@ -10,7 +10,7 @@
             <input 
                 class="border-4 border-lightblue px-8 py-4 mt-4 rounded-full text-xl"
                 v-model="userInfo.email"
-                placeholder="Username"
+                placeholder="Email"
                 type="email"/>
             
             <input 
@@ -23,7 +23,7 @@
 
             <button
                 class="bg-black hover:bg-gray text-white px-8 py-6 mt-8 rounded-full text-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-                @click="submitForm(userInfo)"
+                @click.prevent="submitForm(userInfo)"
                 >
                 {{ buttonText }}
             </button>

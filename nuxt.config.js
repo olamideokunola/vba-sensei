@@ -1,6 +1,8 @@
+const isDev = process.env.NODE_ENV === 'development'
+const useEmulators = false // manually change if emulators needed
 
 export default {
-  mode: 'universal',
+  //mode: 'universal',
   /*
   ** Headers of the page
   */
@@ -18,7 +20,10 @@ export default {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { 
+    color: 'blue',
+    height: '5px'
+  },
   /*
   ** Global CSS
   */
@@ -36,31 +41,50 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
-    'nuxt-composition-api'
+    // 'nuxt-composition-api',
+    '@nuxtjs/firebase',
+    '@nuxtjs/composition-api/module'
   ],
+
+  firebase: {
+    lazy: false,
+    config: {
+      apiKey: 'AIzaSyBvQ1QlHAwZ91Vk7Hg2w2d1mzaUdbv62gs',
+      authDomain: 'vba-sensei.firebaseapp.com',
+      projectId: 'vba-sensei',
+      storageBucket: 'vba-sensei.appspot.com',
+      messagingSenderId: '487786726058',
+      appId: '1:487786726058:web:49c009d2171e6de44ac6d3',
+      measurementId: 'G-GSS4RP019D'
+    },
+    onFirebaseHosting: false,
+    terminateDatabasesAfterGenerate: true,
+    services: {
+      auth: {
+        persistence: 'local',
+        initialize: {
+          onAuthStateChangedAction: 'auth/onAuthStateChanged',
+          subscribeManually: false
+        },
+        ssr: true,
+        emulatorPort: isDev && useEmulators ? 9099 : undefined,
+        disableEmulatorWarnings: false,
+      },
+      database: {
+        emulatorPort: isDev && useEmulators ? 9000 : undefined,
+      },
+      storage: true,
+    }
+  },
+
   /*
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/auth',
-    '@nuxtjs/firebase',
-    {
-      config: {
-        apiKey: 'AIzaSyBvQ1QlHAwZ91Vk7Hg2w2d1mzaUdbv62gs',
-        authDomain: 'vba-sensei.firebaseapp.com',
-        projectId: 'vba-sensei',
-        storageBucket: 'vba-sensei.appspot.com',
-        messagingSenderId: '487786726058',
-        appId: '1:487786726058:web:49c009d2171e6de44ac6d3',
-        measurementId: 'G-GSS4RP019D'
-      },
-      services: {
-        auth: true, // Just as example. Can be any other service.
-        database: true,
-        functions: true,
-      }
-    }
+    [
+      '@nuxtjs/axios',
+     // '@nuxtjs/auth',
+    ]
   ],
   /*
   ** Build configuration
@@ -71,7 +95,7 @@ export default {
     */
     extend (config, ctx) {
     },
-    transpile: ['@nuxtjs/auth']
+    //transpile: ['@nuxtjs/auth']
   },
   generate: {
     // choose to suit your project
@@ -81,20 +105,31 @@ export default {
     baseURL: 'http://165.227.94.31:8000/bizops/'
   },
   router: {
-    middleware: ['auth']
-  },
-
-  // Firebase Auth:
-  auth: {
-    persistence: 'local', // default
-    initialize: {
-      onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
-      onAuthStateChangedAction: 'onAuthStateChangedAction',
-      subscribeManually: false
+    // middleware: ['auth']
+    extendRoutes(routes, resolve) {
+      // routes.push({
+      //   name: 'custom',
+      //   path: '*',
+      //   component: resolve(__dirname, 'pages/404.vue')
+      // })
     },
-    ssr: false, // default
-    emulatorPort: 9099,
-    emulatorHost: 'http://localhost',
+    beforeEach(to, from, next) {
+      alert('About to enter another route!')
+      // if (to.matched.some(record => record.meta.requiresAuth)) {
+      //   // this route requires auth, check if logged in
+      //   // if not, redirect to login page.
+      //   if (!auth.loggedIn()) {
+      //     next({
+      //       path: '/login',
+      //       query: { redirect: to.fullPath }
+      //     })
+      //   } else {
+      //     next()
+      //   }
+      // } else {
+      //   next() // make sure to always call next()!
+      // }
+    }
   },
   
   // Nuxt Auth:
@@ -124,11 +159,13 @@ export default {
   //       // autoFetchUser: true
   //     }
   //   },
-    redirect: {
-      login: '/signin',
-      logout: '/',
-      callback: '/signin',
-      home: '/'
-    }
+    // redirect: {
+    //   login: '/signin',
+    //   logout: '/',
+    //   callback: '/signin',
+    //   home: '/'
+    // }
+
+
   }
 

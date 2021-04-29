@@ -18,9 +18,15 @@
               </a>
           </div>
       </div>
-
+      
+      <p v-if="$fetchState.pending">Fetching</p>
+      <p v-else-if="$fetchState.error">An error occurred</p>
+      
       <!--Courses List-->
+      <!-- <p v-if="$fetchState.pending">Fetching courses...</p>
+      <p v-else-if="$fetchState.error">An error occurred :(</p> -->
       <div
+        v-else
         class="py-16"
         v-for="(levelAndCourse, id) in levelAndCourses"
         v-bind:key="id"
@@ -50,7 +56,7 @@
                                 <svg v-if="video_course.level === 'Beginner'" class="w-8 fill-current text-primary mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 6c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6zm2 0v8h16V6H2zm1 1h4v6H3V7z"/></svg>
                                 <svg v-else-if="video_course.level === 'Intermediate'" class="w-8 fill-current text-primary mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 6c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6zm2 0v8h16V6H2zm1 1h4v6H3V7zm5 0h4v6H8V7z"/></svg>
                                 <svg v-else-if="video_course.level === 'Advanced'" class="w-8 fill-current text-primary mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 6c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6zm2 0v8h16V6H2zm1 1h4v6H3V7zm5 0h4v6H8V7zm5 0h4v6h-4V7z"/></svg>
-                                <p class="text-2xl text-center text-white font-bold">{{video_course.level}}</p>
+                                <p class="text-2xl text-center text-white font-bold">{{video_course.level.title}}</p>
                             </div>
                         </div>
                     </div>
@@ -73,8 +79,10 @@ import {
   useContext,
   ref,
   computed,
-  useAsync
-} from 'nuxt-composition-api'
+  useAsync,
+} from '@nuxtjs/composition-api' //'nuxt-composition-api'
+
+import { useCourseRepositories } from '~/service_components/video_courses/useCourseRepositories.js'
 
 export default {
     middleware: 'authenticated',
@@ -84,123 +92,151 @@ export default {
         const levelsFromDB = ref([])
         const lessonsFromDB = ref([])
 
-        useAsync(async() => {
-            // alert('in async 1!')
-            // Load courses and add to store
-            const coursesRef = $fire.database.ref('courses')
-            const coursesSnapshot = await coursesRef.once('value')
+        const lessons = ref([])
 
-            // alert('in async, courses loaded!')
+        const { getCourses, getLevelsAsList, getLessonsAsList } = useCourseRepositories($fire)
 
-            // Load levels
-            const levelsRef = $fire.database.ref('levels')
-            const levelsSnapshot = await levelsRef.once('value')
+        useFetch(async() => {
+            // // alert('in async 1!')
+            // // Load courses and add to store
+            // const coursesRef = $fire.database.ref('courses')
+            // const coursesSnapshot = await coursesRef.once('value')
 
-            levelsSnapshot.forEach((levelSnapshot) => {
-                var levelkey = levelSnapshot.key
-                var levelvalue = levelSnapshot.val()
+            // // alert('in async, courses loaded!')
 
-                // alert('in async, level id is: ' + levelkey + ', title is: ' + levelvalue.title)
+            // // Load levels
+            // const levelsRef = $fire.database.ref('levels')
+            // const levelsSnapshot = await levelsRef.once('value')
 
-                levelsFromDB.value.push({
-                    id: levelkey,
-                    title: levelvalue.title
-                })
+            // levelsSnapshot.forEach((levelSnapshot) => {
+            //     var levelkey = levelSnapshot.key
+            //     var levelvalue = levelSnapshot.val()
 
-                // alert('level added, with key: ' + levelkey + ', is ' +  levelsFromDB.value[levelkey].title)
-            })
+            //     // alert('in async, level id is: ' + levelkey + ', title is: ' + levelvalue.title)
 
-            levelsFromDB.value.forEach((level) => {
+            //     levelsFromDB.value.push({
+            //         id: levelkey,
+            //         title: levelvalue.title
+            //     })
 
-                // alert('in async, showing levels content, id is: ' + level.id + ', title is: ' + level.title)
+            //     // alert('level added, with key: ' + levelkey + ', is ' +  levelsFromDB.value[levelkey].title)
+            // })
 
-            })
+            // levelsFromDB.value.forEach((level) => {
+
+            //     // alert('in async, showing levels content, id is: ' + level.id + ', title is: ' + level.title)
+
+            // })
 
             
-            // alert('in async, levels loaded!')
+            // // alert('in async, levels loaded!')
 
-            // Load lessons
-            const lessonsRef = $fire.database.ref('lessons')
-            const lessonsSnapshot = await lessonsRef.once('value')
+            // // Load lessons
+            // const lessonsRef = $fire.database.ref('lessons')
+            // const lessonsSnapshot = await lessonsRef.once('value')
         
-            lessonsSnapshot.forEach((childSnapshot) => {
-                var childKey = childSnapshot.key
-                var childValue = childSnapshot.val()
+            // lessonsSnapshot.forEach((childSnapshot) => {
+            //     var childKey = childSnapshot.key
+            //     var childValue = childSnapshot.val()
 
-                lessonsFromDB.value.push({
-                    id: childSnapshot.key,
-                    title: childSnapshot.val().title
-                })
-            })
+            //     lessonsFromDB.value.push({
+            //         id: childSnapshot.key,
+            //         title: childSnapshot.val().title
+            //     })
+            // })
 
-            // alert('in async, lessons loaded!')
+            // // alert('in async, lessons loaded!')
 
-            // Get courses from database
-            coursesSnapshot.forEach((childSnapshot) => {
-                var childKey = childSnapshot.key
-                var childValue = childSnapshot.val()                
+            // // Get courses from database
+            // coursesSnapshot.forEach((childSnapshot) => {
+            //     var childKey = childSnapshot.key
+            //     var childValue = childSnapshot.val()                
 
-                // Get keys of lessons of courses, using the lesson indexes 
-                var courselessonKeys = []
-                var lessonsSnapshot = childSnapshot.child('2')
-                lessonsSnapshot.forEach((childlessonSnapshot) => {
-                    var lessonChildKey = childlessonSnapshot.key
-                    var lessonChildValue = childlessonSnapshot.val()
-                    if(lessonChildValue)
-                    {
-                        courselessonKeys.push(lessonChildKey)
-                    }
-                })
+            //     // Get keys of lessons of courses, using the lesson indexes 
+            //     var courselessonKeys = []
+            //     var lessonsSnapshot = childSnapshot.child('2')
+            //     lessonsSnapshot.forEach((childlessonSnapshot) => {
+            //         var lessonChildKey = childlessonSnapshot.key
+            //         var lessonChildValue = childlessonSnapshot.val()
+            //         if(lessonChildValue)
+            //         {
+            //             courselessonKeys.push(lessonChildKey)
+            //         }
+            //     })
 
-                var courseObj = childValue
-                courseObj.lessons = []
+            //     var courseObj = childValue
+            //     courseObj.lessons = []
                 
-                // Add lessons to course using keys
-                lessonsFromDB.value.forEach((lesson) => {
-                    courselessonKeys.forEach((lessonKey) => {
-                        if(lesson.id == lessonKey)
-                        {
-                            courseObj.lessons.push()
-                        }
-                    })
-                })
+            //     // Add lessons to course using keys
+            //     lessonsFromDB.value.forEach((lesson) => {
+            //         courselessonKeys.forEach((lessonKey) => {
+            //             if(lesson.id == lessonKey)
+            //             {
+            //                 courseObj.lessons.push()
+            //             }
+            //         })
+            //     })
 
-                // alert('in async, course: ' + courseObj.title)
-                // alert('in async, course level: ' + courseObj.level)
+            //     // alert('in async, course: ' + courseObj.title)
+            //     // alert('in async, course level: ' + courseObj.level)
 
-                // Get level title
-                var levelTitle = levelsFromDB.value.find((level) => level.id === courseObj.level).title
-                courseObj.level = levelTitle
+            //     // Get level title
+            //     var levelTitle = levelsFromDB.value.find((level) => level.id === courseObj.level).title
+            //     courseObj.level = levelTitle
                 
-                courses.value.push(courseObj)
-                // alert('xxxxxxxxxCourse is ' + courseObj.title)
-            }) 
+            //     courses.value.push(courseObj)
+            //     // alert('xxxxxxxxxCourse is ' + courseObj.title)
+            // }) 
 
-            // Set Level
+            // // Set Level
 
-            // alert('about to save to store!')
+            // // alert('about to save to store!')
 
-            courses.value.forEach((course) => {
-               // alert('Course description ' + course.description)
-            })
+            // courses.value.forEach((course) => {
+            //    // alert('Course description ' + course.description)
+            // })
 
-            // Save to store
-            $store.dispatch('video_courses/saveCoursesToStore', { 
+            levelsFromDB.value = await getLevelsAsList()
+
+            //alert('number of levels is ' + levelsFromDB.value.length)
+
+            lessonsFromDB.value = await getLessonsAsList()
+
+            // alert('number of lessons is ' + lessonsFromDB.value.length)
+
+            courses.value = await getCourses()
+
+            // alert('number of courses is ' + courses.value.length)
+
+            // Save courses to store
+            $store.dispatch('video_courses/loadCoursesToStore', { 
                 'courses': courses.value 
             })
+
+            // Save levels to store
+            $store.dispatch('video_courses/loadLevelsToStore', { 
+                'levels': levelsFromDB.value 
+            })
+
+            // alert('number of courses is ' + courses.value.length)
         })
 
-        const video_courses = ref($store.state.video_courses.video_courses)
-        const levels = $store.state.video_courses.levels
+        // alert('about to get video courses')
+
+        const video_courses = computed(() => $store.state.video_courses.video_courses)
+        // const video_courses = computed(() => $store.state.video_courses.video_courses)
+        const levels = computed(() => $store.state.video_courses.levels)
 
         const levelAndCourses = computed(() => {
-            var levelAndCourses = []
-            levels.forEach((level) => {
-                const courses = video_courses.value.filter((course) => course.level === level)
+            // alert('in levelAndCourses, levels are ' + levels.value.length)
+            const levelAndCourses = []
+            levels.value.forEach((level) => {
+                const courses = video_courses.value.filter((course) => course.level.id === level.id)
+                // alert('items in local courses: ' + courses.length)
                 if (courses.length > 0) {
                     levelAndCourses.push(
                         {
-                            level,
+                            level: level.title,
                             video_courses: courses
                         }
                     )
@@ -210,7 +246,7 @@ export default {
         })
 
         return {
-                levelAndCourses
+                levelAndCourses,
             }
         }
     }

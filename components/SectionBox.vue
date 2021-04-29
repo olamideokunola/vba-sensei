@@ -15,7 +15,7 @@ import {
   useContext,
   ref,
   computed,
-} from 'nuxt-composition-api'
+} from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
 export default {
   components: {

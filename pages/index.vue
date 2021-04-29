@@ -82,13 +82,14 @@ import {
   useFetch,
   useContext,
   ref,
-} from 'nuxt-composition-api'
+} from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
 export default {
   auth: false,
   components: {
 
   },
+  // layout: 'home',
   setup() {
 
     const item = ref('item text')

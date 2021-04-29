@@ -25,15 +25,29 @@ export default {
     UserAuthForm
   },
   methods: {
-    signInUser(loginInfo) {
+    async signInUser(loginInfo) {
       // alert(loginInfo.email)
-      this.$auth.loginWith('customStrategy', {
-        data: {
-          username: loginInfo.email,
-          password: loginInfo.password
-        }
-      }) //.then(() => alert('Logged In!'))
+      // this.$auth.loginWith('customStrategy', {
+      //   data: {
+      //     username: loginInfo.email,
+      //     password: loginInfo.password
+      //   }
+      // }) //.then(() => alert('Logged In!'))
       // debugger
+      // alert('About to signin!')
+      try {
+        await this.$fire.auth.signInWithEmailAndPassword(
+          loginInfo.email,
+          loginInfo.password
+        )
+        alert('Signin completed!')
+        localStorage.setItem('isLoggedIn', true)
+        this.$router.push('/')
+        
+      } catch (e) {
+        localStorage.removeItem('isLoggedIn')
+        alert(e)
+      }
     }
   }
 

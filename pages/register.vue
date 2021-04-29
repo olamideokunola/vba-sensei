@@ -25,7 +25,26 @@ export default {
     UserAuthForm
   },
   methods: {
-    registerUser(registrationInfo) {
+    async registerUser(registrationInfo) {
+      try {
+        await this.$fire.auth.createUserWithEmailAndPassword(
+          registrationInfo.email,
+          registrationInfo.password
+        )
+        console.log('Signin successful!')
+
+        // Save UserName
+        var user = this.$fire.auth.currentUser
+        await user.updateProfile({
+          displayName: registrationInfo.name
+        })
+        console.log('Display Name update successful!')
+
+        this.$router.push('/video_courses')
+        
+      } catch (e) {
+        alert(e)
+      }
       // debugger
       // alert('You pressed signin button')
     }

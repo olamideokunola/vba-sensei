@@ -7,9 +7,9 @@ const course = {
 }
 
 const levels = [
-    'Beginner',
-    'Intermediate'
-]
+    // 'Beginner',
+    // 'Intermediate'
+]   
 
 const video_courses = [
     // {
