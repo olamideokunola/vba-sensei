@@ -8,6 +8,7 @@ import {
 } from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
 import { useLessonViewHistory } from '~/service_components/video_courses/useLessonViewHistory.js'
+import { useAuthRepositories } from '~/service_components/video_courses/useAuthRepositories.js'
 
 function useCourseRepositories(fire) {
     const levels = ref({})
@@ -17,8 +18,13 @@ function useCourseRepositories(fire) {
     //const { fire } = useContext()
 
     const {
-        getDownloadUrl
+        getDownloadUrl,
+        getLessonsViewHistories
     } = useLessonViewHistory(fire)
+
+    const {
+        authUser
+    } = useAuthRepositories(fire)
     
     const getLevels = async () => {
         // get levels
@@ -65,12 +71,18 @@ function useCourseRepositories(fire) {
 
         lessons.value = {}
 
+        // alert('In getLessons, userId is ' + authUser.value.uid)
+
+        const lessonsViewHistories = await getLessonsViewHistories({ userId: authUser.value.uid})
+        
+        // alert('In getLessons, number lessons with history is ' + Object.keys(lessonsViewHistories).length)
         snapshot.forEach((childsnapshot) => {
             lessons.value[childsnapshot.key] = 
             {
                 id: childsnapshot.key,
                 title: childsnapshot.val().title,
                 videoFileName: childsnapshot.val().videoFileName,
+                viewHistory: lessonsViewHistories[childsnapshot.key]
             }
         })
 
@@ -139,54 +151,8 @@ function useCourseRepositories(fire) {
             // reset
             courseLessons.value = []
 
-            // snapshot.forEach((childsnapshot) => {
-            //     alert('in loop')
-            // })
-
-            // alert('In getCourseLessons, snapshots are ' + snapshot.length)
-
-            // snapshot.map((childsnapshot) => {
-            //     alert('in loop')
-            //     return {
-            //         id: childsnapshot.key,
-            //         title: 'asdasd',
-            //         videoFileName: 'asdasdasd'
-            //     }
-            // })
-
-            // const promises = snapshot.map((childsnapshot) => {
-            //     alert('in loop')
-            //     if(childsnapshot.val()){
-            //         // var videoUrl =   await getDownloadUrl(childsnapshot.key)
-            //         return {
-            //             id: childsnapshot.key,
-            //             title: lessons[childsnapshot.key].title,
-            //             videoFileName: lessons[childsnapshot.key].videoFileName, 
-            //             videoUrl: getDownloadUrl(childsnapshot.key)
-            //         }
-            //     }
-            // })
-
-            // courseLessons.value = promises // await Promides.all(promises)
-            // alert('In getCourseLessons, items are ' + promises.length)
-
-            // for (const childsnapshot of snapshot) {
-            //     alert('in loop')
-            //     if(childsnapshot.val()){
-            //         // var videoUrl =   await getDownloadUrl(childsnapshot.key)
-            //         courseLessons.value.push({
-            //             id: childsnapshot.key,
-            //             title: lessons[childsnapshot.key].title,
-            //             videoFileName: lessons[childsnapshot.key].videoFileName, 
-            //             videoUrl: ''
-            //             // videoUrl: await getDownloadUrl(childsnapshot.key)
-            //         })
-            //     }
-            // }
-
             const _courselessons = []
 
-            
                 snapshot.forEach((childsnapshot) => {
                     // alert('In foreach')
                     if(childsnapshot.val()){
@@ -200,25 +166,8 @@ function useCourseRepositories(fire) {
                     }
                 })
 
-
-            
-
-            // alert('In maps ' + _courselessons.length)
-
-            // courseLessons.value = _courselessons.map((lesson) => {
-            //     alert('In maps')
-            //     var videoUrl =   await getDownloadUrl(childsnapshot.key)
-            //     return {
-            //         id: lesson.id,
-            //         title: lesson.title,
-            //         videoFileName: lesson.videoFileName, 
-            //         videoUrl: lesson.videoUrl
-            //     }
-            // })
-
             const promises = _courselessons.map(async (lesson) => {
                 // alert('in promises loop')
-                // var videoUrl =   await getDownloadUrl(childsnapshot.key)
                 return {
                     id: lesson.id,
                     title: lesson.title,
@@ -229,7 +178,6 @@ function useCourseRepositories(fire) {
 
             courseLessons.value = await Promise.all(promises)
             // alert('In getCourseLessons, items are ' + promises.length)
-
 
             return courseLessons.value
         

@@ -3,11 +3,11 @@
       <!-- Courses Title -->
       <div class="video-courses-bkg bg-primary flex flex-col align-middle justify-center">
           <!--{{video_course.title}}-->
-          <h1 class="container mx-auto px-12 text-6xl text-black font-bold">{{video_course.title}}</h1>
+          <h1 class="container mx-auto p-2 sm:p-0 sm:px-12 text-4xl text-center sm:text-6xl sm:text-left text-black font-bold">{{video_course.title}}</h1>
       </div>
         <!-- Url: {{url}} -->
       <p v-if="$fetchState.pending">Fetching</p>
-      <div class="video-courses-bkg flex bg-black flex-row justify-start">
+      <div class="video-courses-bkg flex flex-col sm:flex-row bg-black justify-start">
           <!--Video-->
           <!-- :src="require('~/assets/videos/video_courses/' + current_video)" -->
           <div class="player-container w-full h-auto h-64 bg-black">          
@@ -40,16 +40,22 @@
            </div>
 
           <!--Lessons-->
-          <div class="border w-5/12 h-64  bg-white">
+          <div class="border sm:w-5/12 sm:h-64  bg-white">
             <h1 class="container mx-auto px-8 text-4xl text-black font-bold">Lessons</h1>
             <div
+                class="flex flex-row justify-between"
                 :class="lesson.id==currentLesson.id ? selected_lesson : un_selected_lesson"
                 v-for="(lesson, id) in video_course.lessons"
                 :key="id"
                 @click="setCurrentVideo(id, lesson)"
                 >
-                    {{id+1}}. {{lesson.title}}
+                    <p>{{id+1}}. {{lesson.title}}</p>
+                    <ViewStatusIcons
+                        :viewStatusIcons="viewStatusIcons"
+                        :viewHistory="lesson.viewHistory"
+                    ></ViewStatusIcons>
             </div>
+            
           </div>
       </div>
 
@@ -67,25 +73,29 @@ import {
   useAsync
 } from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
-// import { useCourseRepositories } from '~/service_components/video_courses/useCourseRepositories.js'
+import ViewStatusIcons from '~/components/ViewStatusIcons.vue'
+
+import { useCourseRepositories } from '~/service_components/video_courses/useCourseRepositories.js'
 import { useLessonViewHistory } from '~/service_components/video_courses/useLessonViewHistory.js'
 
-
-
 export default {
+    components: {
+        ViewStatusIcons,
+    },
     setup(props, { root: { $store, $router, $route, $fire}}) {
 
-        // const {  } = useCourseRepositories($fire)
+        const { getCourses } = useCourseRepositories($fire)
         const {
             saveLessonStarted, 
             saveLastPlayHeadTime, 
             getLastLessonStopTime,
             saveLessonCompleted,
             getLessonViewHistory,
-            getDownloadUrl
+            getDownloadUrl,
+            getViewStatusIcons
         } = useLessonViewHistory($fire, $store)
 
-        const video_courses = computed(() =>  $store.getters['video_courses/get_video_courses'])
+        const video_courses = ref([])//computed(() =>  $store.getters['video_courses/get_video_courses'])
 
         const temp_course = ref({})
 
@@ -140,16 +150,26 @@ export default {
         const videoDOMobj = ref({})
 
         const onLoaded = async (video) => {
-            // alert('In on loaded')
-            // Keep reference to video object in DOM
-            videoDOMobj.value = video
+            try {
+                // alert('In on loaded')
+                // Keep reference to video object in DOM
+                videoDOMobj.value = video
 
-            // Set video start time
-            // video.currentTime = lesson_video.startTime
-            // videoDOMobj.value.currentTime = 10
-            var { ended, playhead, started } = await getLessonViewHistory({ userId: authUser.value.uid, lessonId: currentLesson.value.id })
-            videoDOMobj.value.currentTime = playhead // await getLastLessonStopTime({ userId: authUser.value.uid, lessonId: currentLesson.value.id })
-            // alert('time ' + videoDOMobj.value.currentTime)
+                // Set video start time
+                // video.currentTime = lesson_video.startTime
+                // videoDOMobj.value.currentTime = 10
+                var { ended, playhead, started } = await getLessonViewHistory({ userId: authUser.value.uid, lessonId: currentLesson.value.id })
+                
+                if(playhead) {
+                    videoDOMobj.value.currentTime = playhead // await getLastLessonStopTime({ userId: authUser.value.uid, lessonId: currentLesson.value.id })
+                } else {
+                    videoDOMobj.value.currentTime = 0
+                }
+                
+                // alert('time ' + videoDOMobj.value.currentTime)
+            } catch (e) {
+                alert('Error in onLoaded, error is ', e.message)
+            }
         }
 
         const onPaused = async() => {
@@ -160,22 +180,55 @@ export default {
 
         const url = ref([])
 
+        // const viewStatusUrl = ref('')
+
+        const viewStatusIcons = ref({})
+
+
         useFetch (async () => {
             
-            video_course.value = video_courses.value.find((video_course) => video_course.title === $route.params.title)
+            try {
+                video_courses.value = await getCourses()
+                video_course.value = video_courses.value.find((video_course) => video_course.title === $route.params.title)
             
-            // set first lesson video
-            if(video_course.value.lessons.length > 0) {
-                currentLesson.value = video_course.value.lessons[0]
-            }
+                // set first lesson video
+                if(video_course.value.lessons.length > 0) {
+                    currentLesson.value = video_course.value.lessons[0]
+                }
 
-            // alert('In fetch')
-            if(video_course.value.lessons.length > 0) {
-                // alert('In fetch, 1st lesson id is ' + video_course.value.lessons[0].id )
-                url.value = await getDownloadUrl(video_course.value.lessons[0].id)
-                // alert('In fetch, url is ' + url.value)
+                // alert('In fetch')
+                if(video_course.value.lessons.length > 0) {
+                    // alert('In fetch, 1st lesson id is ' + video_course.value.lessons[0].id )
+                    url.value = await getDownloadUrl(video_course.value.lessons[0].id)
+                    // alert('In fetch, url is ' + url.value)
+                }
+
+                // view staus icons
+                viewStatusIcons.value = await getViewStatusIcons()
+                // viewStatusUrl.value =  await viewPendingUrl()
+
+                // Listen to changes to view history
+                const currentLessonViewingHistoryRef = $fire.database.ref('views/' + authUser.value.uid)
+                currentLessonViewingHistoryRef.on('value', (snapshot) => {
+                    try {
+                        if(snapshot.exists()) {
+                            const history = snapshot.val()[currentLesson.value.id]
+                            // alert('in currentLessonViewingHistoryRef, lesson started is ' + history.started)
+                            currentLesson.value.viewHistory = history
+                        }
+                    } catch(e) {
+
+                        alert('Error in currentLessonViewingHistoryRef, message is ' + e)
+                    } 
+                })
+
+            } catch (e) {
+                alert('Error in useFetch, message is ' + e)
             }
+            
         })
+
+        
 
         const onAbort = async (video) => {
             //alert('Aborted, time is ' + video.currentTime)
@@ -200,6 +253,8 @@ export default {
             // Set Lesson Started in view history
             saveLessonStarted({ userId: authUser.value.uid, lessonId: currentLesson.value.id })
             // alert('Current with id ' + authUser.uid + ' saved!')
+
+            // currentLesson.value.viewHistory.started = true
         }
 
         const saveUser = async function(authUser) {
@@ -223,6 +278,11 @@ export default {
             alert('Error! ${e}')
         }
 
+        
+
+
+
+
         return {
             video_course,
             current_video,
@@ -240,7 +300,8 @@ export default {
             onEnded,
             onAbort,
             url,
-            currentLesson
+            currentLesson,
+            viewStatusIcons,
         }
     }
 }
