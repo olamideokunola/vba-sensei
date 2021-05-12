@@ -16,19 +16,19 @@
             :disabled="disabled"
         />
 <!-- {{title}} -->
-        <label class="text-3xl mt-4 font-light" for="description" >Description</label>
+        <label class="text-3xl mt-4 font-light" for="coursedescription" >Description</label>
         <textarea 
             name="coursedescription"
-            class="border-4 border-lightblue px-8 py-4 rounded-full text-xl"
+            class="border-4 border-lightblue px-8 py-4 rounded-3xl sm:rounded-full text-xl"
             v-model="description"
             :disabled="disabled"
         />
 <!-- {{description}} -->
-        <label class="text-3xl mt-4 font-light" for="description" >Level</label>
+        <label class="text-3xl mt-4 font-light" for="courselevel" >Level</label>
 <!-- {{level}} -->
         <select 
             name="courselevel"
-            class="w-1/4 border-4 border-lightblue px-8 py-4 rounded-full text-xl text-gray"
+            class="sm:w-1/4 border-4 border-lightblue px-8 py-4 rounded-full text-xl text-gray"
             v-model="level"
             :disabled="disabled"
         >
@@ -50,7 +50,7 @@
             v-if="mode=='new'"
             value="Create new course"
             @click.prevent="$emit('submitNewCourse', { title, description, level, lessons })"
-            class="w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
+            class="sm:w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
         />
 
         <input 
@@ -58,7 +58,7 @@
             v-if="mode=='edit'"
             value="Edit course"
             @click="$emit('updateCourse', course)"
-            class="w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
+            class="sm:w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
         />
 
 
@@ -88,7 +88,7 @@
                 type="submit"
                 value="Upload video"
                 @click.prevent="$emit('addLesson', newLesson, videoFile)"
-                class="w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
+                class="sm:w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
             />
 
             <!-- Videos -->

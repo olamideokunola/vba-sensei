@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-start content-between px-20 py-4 bg-lightblue">
+    <div class="flex flex-col items-start content-between px-4 sm:px-20 py-4 bg-lightblue">
         <HeaderInPage
             title="Manage Courses"
             :menuItems=menuItems
@@ -17,6 +17,15 @@
             @next="nextPage"
             @prev="prevPage"
         >
+             <!-- new action buttons -->
+            <template v-slot:actionbuttons>
+                <LinkButton 
+                    class=""
+                    displayText="New Course"
+                    link="managecourses/newcourse"
+                    bgColor="primary"
+                ></LinkButton>
+            </template>
         
             <template v-slot:items>
                 <nuxt-link
@@ -28,7 +37,7 @@
                         class="bg-white mt-4 rounded-md px-6 py-3"
                     >
                         <!-- Header -->
-                        <div class="flex flex-row container items-center justify-between">
+                        <div class="flex flex-col sm:flex-row container items-center justify-between">
                             <h2 
                                 class="text-2xl text-gray font-semibold"
                             > 
@@ -43,14 +52,14 @@
                         </div>
 
                         <!-- Contents -->
-                        <div class="flex flex-row">
+                        <div class="flex flex-col sm:flex-row items-center">
                             <p
-                                class="w-7/8 text-md text-gray font-light pr-12"
+                                class="w-7/8 text-md text-gray text-center sm:text-left font-light sm:pr-12"
                             >
                                 {{ courseItem.description }}
                             </p> 
                             <div
-                                class="flex w-1/8"
+                                class="flex w-1/8 py-4 sm:py-0"
                             >
                                 <button 
                                     v-if="!courseItem.active"
@@ -70,8 +79,8 @@
                         </div>  
 
                         <!-- Footer -->
-                        <div class="flex flex-row mt-2">
-                            <p class="text-sm font-semibold text-gray">{{ courseItem.lessons.length }} Lessons in {{ courseItem.duration }} hours</p>
+                        <div class="flex flex-row mt-2 justify-center sm:justify-start">
+                            <p class="text-sm text-center sm:text-left font-semibold text-gray">{{ courseItem.lessons.length }} Lessons in {{ courseItem.duration }} hours</p>
                         </div>
                     </div>
                 </nuxt-link>
@@ -92,6 +101,7 @@ import {
 import HeaderInPage from '~/components/HeaderInPage.vue'
 import SearchBox from '~/components/Search_Dashboard.vue'
 import ListSectionBox from '~/components/SectionBox_List.vue'
+import LinkButton from '~/components/LinkButton.vue'
 
 import { useCourseRepositories } from '~/service_components/video_courses/useCourseRepositories.js'
 
@@ -100,7 +110,8 @@ export default {
   components: {
     HeaderInPage,
     SearchBox,
-    ListSectionBox
+    ListSectionBox,
+    LinkButton
   },
   // layout: 'home',
   setup(props, { root: { $store, $fire } }) {

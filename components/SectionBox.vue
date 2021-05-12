@@ -1,7 +1,7 @@
 <template>
-    <div class="container flex flex-col px-12 pb-8 rounded-xl bg-white bg-opacity-50">
-        <div class="container flex flex-row items-center justify-between pt-6 ">
-          <h1 class="text-4xl text-gray font-extrabold">{{ sectionTitle }}</h1>
+    <div class="container flex flex-col px-4 sm:px-12 pb-8 rounded-xl bg-white bg-opacity-50">
+        <div class="container flex flex-col sm:flex-row items-center justify-between pt-6 ">
+          <h1 class="text-center sm:text-left text-4xl text-gray font-extrabold">{{ sectionTitle }}</h1>
           <slot name="actionbar"></slot>
         </div>
         <slot></slot>

@@ -1,18 +1,18 @@
 <template>
   <div>
       <!-- Courses Top -->
-      <div class="video-courses-bkg bg-primary flex flex-col align-middle justify-center">
+      <div class="video-courses-bkg bg-primary flex flex-col align-middle justify-center pt-20 pb-20 sm:pt-0 sm:pb-0">
           <h1 class="text-6xl text-white font-bold text-center">Video Courses</h1>
           <img class="object-contain mx-auto max-w-md mt-0 pb-2" src="~/assets/imgs/video_courses.svg"/>
-          <div class="text-center pt-4 pb-16">
+          <div class="flex flex-col  sm:flex-row sm:justify-center text-center py-16 sm:pt-4 sm:pb-16">
               <a href="#Beginner">
                 <button
-                    class="bg-white shadow hover:bg-black text-black hover:text-white rounded-full px-24 py-4 mr-16 font-bold text-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                    class="bg-white shadow hover:bg-black text-black hover:text-white rounded-full px-24 py-4 sm:mr-16 font-bold text-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                     Beginner
                 </button>
               </a>
               <a href="#Intermediate">
-                <button class="bg-white shadow hover:bg-black text-black hover:text-white rounded-full px-20 py-4 font-bold text-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                <button class="bg-white shadow hover:bg-black text-black hover:text-white rounded-full px-20 py-4 mt-8 sm:mt-0 font-bold text-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                     Intermediate
                 </button>
               </a>
@@ -38,7 +38,8 @@
             >
             <nuxt-link :to="'/video_courses/' + video_course.title">
                 <div 
-                    class="container mx-auto max-w-6xl shadow hover:shadow-lg border-solid border-gray border-opacity-25 rounded p-8 mt-8 flex flex-row justify-start"
+                    class="container mx-auto max-w-6xl shadow hover:shadow-lg border-solid 
+                    border-gray border-opacity-25 rounded p-8 mt-8 flex flex-col sm:flex-row items-center sm:justify-start"
                     :to="'/video_courses/' + video_course.title"
                     >
                     
@@ -60,8 +61,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-8">
-                        <h1 class="text-black text-5xl font-bold">{{video_course.title}}</h1>
+                    <div class="p-8 text-center sm:text-left">
+                        <h1 class="max-w-3xl text-black text-4xl sm:text-5xl font-bold">{{video_course.title}}</h1>
                         <p class="max-w-3xl">{{video_course.description}} </p>
                     </div>
                 </div>
@@ -97,104 +98,6 @@ export default {
         const { getCourses, getLevelsAsList, getLessonsAsList } = useCourseRepositories($fire)
 
         useFetch(async() => {
-            // // alert('in async 1!')
-            // // Load courses and add to store
-            // const coursesRef = $fire.database.ref('courses')
-            // const coursesSnapshot = await coursesRef.once('value')
-
-            // // alert('in async, courses loaded!')
-
-            // // Load levels
-            // const levelsRef = $fire.database.ref('levels')
-            // const levelsSnapshot = await levelsRef.once('value')
-
-            // levelsSnapshot.forEach((levelSnapshot) => {
-            //     var levelkey = levelSnapshot.key
-            //     var levelvalue = levelSnapshot.val()
-
-            //     // alert('in async, level id is: ' + levelkey + ', title is: ' + levelvalue.title)
-
-            //     levelsFromDB.value.push({
-            //         id: levelkey,
-            //         title: levelvalue.title
-            //     })
-
-            //     // alert('level added, with key: ' + levelkey + ', is ' +  levelsFromDB.value[levelkey].title)
-            // })
-
-            // levelsFromDB.value.forEach((level) => {
-
-            //     // alert('in async, showing levels content, id is: ' + level.id + ', title is: ' + level.title)
-
-            // })
-
-            
-            // // alert('in async, levels loaded!')
-
-            // // Load lessons
-            // const lessonsRef = $fire.database.ref('lessons')
-            // const lessonsSnapshot = await lessonsRef.once('value')
-        
-            // lessonsSnapshot.forEach((childSnapshot) => {
-            //     var childKey = childSnapshot.key
-            //     var childValue = childSnapshot.val()
-
-            //     lessonsFromDB.value.push({
-            //         id: childSnapshot.key,
-            //         title: childSnapshot.val().title
-            //     })
-            // })
-
-            // // alert('in async, lessons loaded!')
-
-            // // Get courses from database
-            // coursesSnapshot.forEach((childSnapshot) => {
-            //     var childKey = childSnapshot.key
-            //     var childValue = childSnapshot.val()                
-
-            //     // Get keys of lessons of courses, using the lesson indexes 
-            //     var courselessonKeys = []
-            //     var lessonsSnapshot = childSnapshot.child('2')
-            //     lessonsSnapshot.forEach((childlessonSnapshot) => {
-            //         var lessonChildKey = childlessonSnapshot.key
-            //         var lessonChildValue = childlessonSnapshot.val()
-            //         if(lessonChildValue)
-            //         {
-            //             courselessonKeys.push(lessonChildKey)
-            //         }
-            //     })
-
-            //     var courseObj = childValue
-            //     courseObj.lessons = []
-                
-            //     // Add lessons to course using keys
-            //     lessonsFromDB.value.forEach((lesson) => {
-            //         courselessonKeys.forEach((lessonKey) => {
-            //             if(lesson.id == lessonKey)
-            //             {
-            //                 courseObj.lessons.push()
-            //             }
-            //         })
-            //     })
-
-            //     // alert('in async, course: ' + courseObj.title)
-            //     // alert('in async, course level: ' + courseObj.level)
-
-            //     // Get level title
-            //     var levelTitle = levelsFromDB.value.find((level) => level.id === courseObj.level).title
-            //     courseObj.level = levelTitle
-                
-            //     courses.value.push(courseObj)
-            //     // alert('xxxxxxxxxCourse is ' + courseObj.title)
-            // }) 
-
-            // // Set Level
-
-            // // alert('about to save to store!')
-
-            // courses.value.forEach((course) => {
-            //    // alert('Course description ' + course.description)
-            // })
 
             levelsFromDB.value = await getLevelsAsList()
 

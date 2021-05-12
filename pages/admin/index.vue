@@ -1,23 +1,25 @@
 <template>
-    <div class="flex flex-col items-start content-between px-20 py-4 bg-lightblue">
+    <div class="flex flex-col items-center sm:items-start content-between px-4 sm:px-20 py-4 bg-lightblue">
         
         <!-- Header -->
-        <div class="flex flex-row items-center pb-4">
-          <h1 class="text-2xl font-bold pr-3">Admin Dashboard</h1>
-          <LinkButton 
-            class="pr-3" 
-            displayText="Courses" 
-            link="#courses"
-            px="2"
-            bgColor="gray"
-            ></LinkButton>
-          <LinkButton 
-            class="pr-3"
-            displayText="Users" 
-            link="#users"
-            px="6"
-            bgColor="gray"
-            ></LinkButton>
+        <div class="flex flex-col sm:flex-row sm:items-center py-4 sm:pt-4 sm:pb-8">
+          <h1 class="text-2xl  flex flex-row text-center sm:text-left font-bold pb-4 sm:mt-0 sm:pb-0 sm:pr-3">Admin Dashboard</h1>
+          <div class="flex flex-row justify-center pb-4 sm:pb-0">
+            <LinkButton 
+              class="p-2 sm:pr-3" 
+              displayText="Courses" 
+              link="#courses"
+              px="2"
+              bgColor="gray"
+              ></LinkButton>
+            <LinkButton 
+              class="p-2 sm:pr-3"
+              displayText="Users" 
+              link="#users"
+              px="6"
+              bgColor="gray"
+              ></LinkButton>
+          </div>
         </div>
 
         <!-- Courses -->
@@ -58,6 +60,7 @@ export default {
     LinkButton,
     StatusSection
   },
+  middleware: ['authenticated',],
   // layout: 'home',
   setup(props, { root: { $fire } }) {
 
@@ -74,13 +77,17 @@ export default {
     useFetch (async () => {
       // Load summary of courses
       const summaryOfCoursesSnapshot = await summaryOfCoursesRef.once('value')
+      
       _statusOfCourses.value = []
+      
       summaryOfCoursesSnapshot.forEach((snapshot) => {
         _statusOfCourses.value.push(snapshot.val())
       })
+        
       const activeCourses = _statusOfCourses.value.reduce((count, course) => {
         return count + (course ? 1 : 0)
       })
+      
       // set summary values for courses
       statusOfCourses.value = 
       {
@@ -92,12 +99,15 @@ export default {
       // Load summary of users
       const summaryOfUsersSnapshot = await summaryOfUsersRef.once('value')
       _statusOfUsers.value = []
+
       summaryOfUsersSnapshot.forEach((snapshot) => {
         _statusOfUsers.value.push(snapshot.val())
       })
+
       const activeUsers = _statusOfUsers.value.reduce((count, user) => {
         return count + (user ? 1 : 0)
       })
+
       // set summary values for users
       statusOfUsers.value = 
       {

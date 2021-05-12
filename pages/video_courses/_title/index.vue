@@ -82,6 +82,7 @@ export default {
     components: {
         ViewStatusIcons,
     },
+    middleware: 'isActive',
     setup(props, { root: { $store, $router, $route, $fire}}) {
 
         const { getCourses } = useCourseRepositories($fire)

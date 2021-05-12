@@ -29,7 +29,7 @@ module.exports = {
       'danger': '#e3342f',
       'white': '#ffffff',
       'lightblue': '#C2D5D5'
-    })
+    })  
   },
   variants: {
     backgroundColor: ['responsive', 'hover', 'focus', 'active']

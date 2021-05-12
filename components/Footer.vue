@@ -1,16 +1,17 @@
 <template>
-    <div class="menu flex flex-row items-start justify-around py-32 bg-lightblue">
-        <div>
-            <img  class="logo" src="~/assets/imgs/vba sensei 3.png"/>
-            <p>
+    <div class="menu flex sm:flex-row flex-col sm:items-start items-center justify-center sm:justify-around align-between py-32 bg-lightblue">
+        <div class="flex flex-col">
+            <img  class="logo align-center self-center sm:self-start" src="~/assets/imgs/vba sensei 3.png"/>
+            <p class="text-center sm:text-left text-xl px-24 sm:px-0">
                 Find resources to aid your learning and use of VBA to <br>
-improve your work efficiency and contribute to growth <br>
-in your career
+                your work efficiency and contribute to growth <br>
+                in your career
             </p>
         </div>
-        <div class="menu">
+        <div class="menu py-12 sm:py-0 flex flex-col">
             <h4 class="text-2xl font-medium">VBA SENSEI</h4>
             <ul
+                class="text-center sm:text-left"
                 v-for="(menuitem, id) in menuitems"
                 :key="id"
                 >
@@ -19,9 +20,10 @@ in your career
                 </li>
             </ul>
         </div>
-        <div class="">
+        <div class="flex flex-col">
             <h4 class="text-2xl font-medium">WHO WE ARE</h4>
             <ul
+                class="text-center sm:text-left"
                 v-for="(menuitem, id) in whowearemenuitems"
                 :key="id"
                 >

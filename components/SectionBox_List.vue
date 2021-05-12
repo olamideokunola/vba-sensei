@@ -2,24 +2,20 @@
     <SectionBox :title="sectionTitle">
       <!-- action bar to child component -->
       <template v-slot:actionbar>
-        <div class="flex flex-row">
+        <div class="flex flex-col-reverse sm:flex-row justify-center align-center">
 
           <!-- results page nav -->
           <ListPageNav
-            class="pr-8"
+            class="sm:pr-8 pt-4 sm:pt-0"
             :currentPage="_currentPage"
             :numberOfPages="numberOfPages"
             @next="$emit('next')"
             @prev="$emit('prev')"
           ></ListPageNav>
 
-          <!-- new course button -->
-          <LinkButton 
-            displayText="New Course" 
-            link="managecourses/newcourse"
-            bgColor="primary"
-          ></LinkButton>
-          
+          <!-- new action buttons -->
+          <slot name="actionbuttons"></slot>
+
         </div>
       </template>
 
@@ -41,13 +37,11 @@ import {
 } from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
 import SectionBox from '~/components/SectionBox.vue'
-import LinkButton from '~/components/LinkButton.vue'
 import ListPageNav from '~/components/ListPageNav.vue'
 
 export default {
   components: {
     SectionBox,
-    LinkButton,
     ListPageNav,
   },
   // layout: 'home',

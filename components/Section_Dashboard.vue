@@ -1,7 +1,10 @@
 <template>
-    <SectionBox :title="sectionTitle">
+    <SectionBox 
+      class=""
+      :title="sectionTitle"
+      >
         <!-- Grid -->
-        <div class="grid grid-cols-3 gap-24 px-24 pt-12 pb-12">
+        <div v-if="items" class="grid sm:grid-cols-3 gap-y-4 py-6 sm:gap-24 sm:px-24 sm:py-12">
           <!-- Grid Items -->
           <QuantityLabel 
             v-for="(value, name) in items" 
@@ -10,16 +13,20 @@
             :description="name" 
           ></QuantityLabel>
         </div>
+
+        <!-- Message -->
+        <slot></slot>
         
         <!-- CTA -->
         <LinkButton 
-          class="self-end py-4" 
+          class="self-center sm:self-end py-4" 
           :displayText="buttonText" 
           :link="buttonUrl"
           fontSize="lg"
           fontWeight="bold"
           px="12"
           bgColor="black"
+          :ctaAction="ctaAction"
           ></LinkButton>
     </SectionBox>
 </template>
@@ -49,7 +56,13 @@ export default {
       title: String,
       items: [],
       ctaText: String,
-      ctaUrl: String
+      ctaUrl: String,
+      ctaAction: {
+        type: Function,
+        default: function() {
+          return ''
+        }
+      }
   },
   setup(props) {
     const sectionTitle = computed(() => props.title)

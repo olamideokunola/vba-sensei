@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row items-center">
         <button
-            class="rounded-md ml-2 px-2 self-stretch bg-gray text-white"
+            class="rounded-md sm:ml-2 px-2 self-stretch bg-gray text-white"
             @click="$emit('prev')"
         >Prev</button>
         <p

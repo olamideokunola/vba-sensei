@@ -69,6 +69,30 @@ export const mutations = {
         state.levels = levels 
         // alert('levels loaded to store')
     },
+    SAVE_LESSONS_STARTED_STATUS (state, { userId, lessonId }) {
+        // alert('In SAVE_LESSONS_COMPLETION_STATUS')
+
+        var userHistory = state.views[userId]
+
+        // alert('In mutations to save lesson' + userHistory)
+        
+        if(userHistory) {
+            // 'If user is in store'
+            userHistory[lessonId].stared = true
+            //alert('History saved in store for existing user')
+        } else {
+            // 'If user not in store'
+            state.views[userId] = {}
+            state.views[userId][lessonId] = {
+                started: true,
+                ended: false,
+                playhead: 0
+            }
+
+            //alert('History saved in store for new user')
+        }
+        
+    },
     SAVE_LESSONS_COMPLETION_STATUS (state, { userId, lessonId, payload }) {
         // alert('In SAVE_LESSONS_COMPLETION_STATUS')
 
@@ -129,6 +153,10 @@ export const actions = {
         // alert('about to load levels to store')
         context.commit('LOAD_LEVELS_TO_STORE', { levels })
         // alert('levels loaded')
+    },
+    saveLessonStartedStatus(context, { userId, lessonId }){
+        // alert('in save lesson completion status')
+        context.commit('SAVE_LESSONS_STARTED_STATUS', { userId, lessonId })
     },
     saveLessonCompletionStatus(context, { userId, lessonId, payload }){
         // alert('in save lesson completion status')

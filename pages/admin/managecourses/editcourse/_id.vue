@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-start content-between px-20 py-4 bg-lightblue">
+    <div class="flex flex-col items-start content-between px-4 sm:px-20 py-4 bg-lightblue">
         <HeaderInPage
             title="Edit Course"
             :menuItems=menuItems

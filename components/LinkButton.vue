@@ -1,7 +1,10 @@
 <template>
-    <nuxt-link :to="linkText">
-        <button class="shadow-md hover:bg-gray text-white px-4 py-2 rounded-full transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+    <nuxt-link class="flex flex-row justify-center" :to="linkText">
+        <button 
+          class="shadow-md hover:bg-gray text-white px-4 py-2 
+            rounded-full transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
             :class="[ fontSizeClass, xPaddingClass, fontWeightClass, bgColorClass ]"
+          @click="ctaAction"
         >
             {{ buttonText }}
             <slot></slot>
@@ -34,6 +37,12 @@ export default {
       bgColor: {
         type: String,
         default: "black"
+      },
+      ctaAction: {
+        type: Function,
+        default: function() {
+          return ''
+        }
       }
   },
   setup(props) {

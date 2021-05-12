@@ -2,23 +2,29 @@
   <div class="">
 
     <!--Learning Paths-->
-    <div class="bg-primary py-8 flex flex-row align-center justify-around">
-      <div class="hero-img pl-16 pr-0 py-8">
-        <img src="~/assets/imgs/route3.png"/>
-      </div>
-      <div class="bg-primary py-4 pr-16 pl-0 bg-local learning-path-bkg">
+    <div class="bg-primary py-8 flex sm:flex-row sm:align-center sm:justify-around flex-col">
+      <div class="sm:pl-16 sm:pr-0 sm:py-8 py-12 flex flex-col contents-center">
         <div
-          class="text-6xl text-center font-bold text-white">
+          class="sm:hidden text-4xl text-center font-bold text-white pb-16">
+            Obtain access to great <br>
+            learning resources <br>
+            for VBA Developers
+        </div>
+        <img class="w-4/6 sm:w-4/6 self-center" src="~/assets/imgs/route3.png"/>
+      </div>
+      <div class="bg-primary sm:py-4 sm:pr-16 sm:pl-0 sm:bg-local py-4 learning-path-bkg flex flex-col">
+        <div
+          class="hidden sm:block sm:text-6xl text-2xl text-center font-bold text-white">
             Obtain access to great <br>
             learning resources <br>
             for VBA Developers
         </div>
 
-        <div class="text-white text-center mt-12 text-2xl"> 
-          Choose from beginner of intermediate <br> learning paths <br>
+        <div class="text-white text-center sm:mt-12 mt-6 text-2xl"> 
+          <p >Choose beginner or intermediate <br> learning paths <br></p>
 
           <nuxt-link to="/video_courses">
-            <button class="bg-black hover:bg-gray align-middle mt-4 px-24 py-4 text-xl text-white rounded-full transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+            <button class="bg-black hover:bg-gray align-middle sm:mt-4 sm:px-24 sm:py-4 px-16 py-4 mt-6 text-xl text-white rounded-full transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
               Learning Paths
             </button>
           </nuxt-link>
@@ -28,16 +34,17 @@
 
     <!--Courses-->
     <div
-      class="bg-black py-8 course-bkg flex pl-64"
+      class="bg-black sm:py-8 course-bkg flex sm:pl-64"
       >
+      <!-- course-bkg -->
       <div class="pt-64 pb-64">
         <div
-          class="text-6xl text-center font-bold text-white ">
-            Explore our <br>
-            suite of courses
+          class="text-6xl text-center font-bold sm:text-white text-black p-4">
+            <p>Explore our <br>
+            suite of courses</p>
         </div>
 
-        <div class="text-white text-center mt-8 text-2xl"> 
+        <div class="sm:text-white text-black text-center mt-8 text-2xl"> 
           Select a course <br>
 
           <button class="bg-primary hover:bg-gray align-middle mt-4 px-32 py-4 text-xl text-white rounded-full transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
@@ -49,10 +56,13 @@
 
     <!--Reference documents-->
     <div
-      class="bg-gray py-32 px-16 flex flex-row justify-around"
+      class="bg-gray py-32 px-16 flex sm:flex-row flex-col justify-around "
       >
       <div>
-        <img class="reference-img rounded-lg" src="~/assets/imgs/books_stack_with_bg.png">
+        <img class="rounded-lg sm:w-4/6" src="~/assets/imgs/books_stack_with_bg.png">
+
+        <!-- reference-img -->
+      
       </div>
       <div class="py-4">
         <div
@@ -129,5 +139,16 @@ export default {
 
 html {
   scroll-behavior: smooth;
+}
+
+@media only screen and (max-width: 600px) {
+  .course-bkg {
+    background-image: none;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-blend-mode: normal;
+    background-size: auto 100%;
+    background-position: center;
+  }
 }
 </style>

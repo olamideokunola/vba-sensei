@@ -4,7 +4,7 @@
       <div class="bg-primary flex flex-col align-middle justify-center">
           <h1 class="container mx-auto px-12 text-6xl text-white text-center font-bold">Register</h1>
       </div>
-      <div class="container mx-auto max-w-xl flex flex-col align-middle justify-center">
+      <div class="container mx-auto max-w-xl flex flex-col align-middle justify-center px-8 sm:px-0">
         <UserAuthForm
           class="m-8"
           :submitForm="registerUser"
@@ -17,39 +17,31 @@
 </template>
 
 <script>
+
+import {
+  defineComponent,
+  useFetch,
+  useContext,
+  ref,
+  computed
+} from '@nuxtjs/composition-api' //'nuxt-composition-api'
+
 import UserAuthForm from '~/components/UserAuthForm.vue'
 
+import { useAuthRepositories } from '~/service_components/video_courses/useAuthRepositories.js'
+
 export default {
-  auth: false,
   components: {
     UserAuthForm
   },
-  methods: {
-    async registerUser(registrationInfo) {
-      try {
-        await this.$fire.auth.createUserWithEmailAndPassword(
-          registrationInfo.email,
-          registrationInfo.password
-        )
-        console.log('Signin successful!')
+  setup(props, { root: { $fire }}) {
 
-        // Save UserName
-        var user = this.$fire.auth.currentUser
-        await user.updateProfile({
-          displayName: registrationInfo.name
-        })
-        console.log('Display Name update successful!')
+    const { registerUser } = useAuthRepositories($fire)
 
-        this.$router.push('/video_courses')
-        
-      } catch (e) {
-        alert(e)
-      }
-      // debugger
-      // alert('You pressed signin button')
+    return {
+      registerUser
     }
   }
-
 }
 </script>
 

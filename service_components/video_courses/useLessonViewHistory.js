@@ -11,7 +11,7 @@ function useLessonViewHistory(fire, store) {
 
     // Saves flag that lesson has started to local store and remote database
     const saveLessonStarted = async ({ userId, lessonId }) => {
-        //alert ('in setLessonStarted, user id is: ' + userId + ' lessonId is: ' + lessonId)
+        // alert ('in setLessonStarted, user id is: ' + userId + ' lessonId is: ' + lessonId)
         const { dbRef, snapShot } = await getViewHistorySnapshot({ userId, lessonId })
 
         try {
@@ -19,14 +19,14 @@ function useLessonViewHistory(fire, store) {
                 // alert('No existing view history!')
             }
 
-            var payload = {
-                "ended" : false,
-                "playhead" : 0,
-                "started" : true
-            }
-       
+            // var payload = {
+            //     "ended" : false,
+            //     "playhead" : 0,
+            //     "started" : true
+            // }
+            dbRef.child('started').set(true)
             // alert('About to set ref!')
-            dbRef.set(payload)
+            // dbRef.set(payload)
 
             // alert('Lesson started set successfully')
         } catch (e) {
@@ -34,7 +34,7 @@ function useLessonViewHistory(fire, store) {
         }
 
         // Save in local store
-        store.dispatch('video_courses/saveLessonCompletionStatus',  { userId, lessonId, payload })
+        store.dispatch('video_courses/saveLessonStartedStatus',  { userId, lessonId})
     }
 
     // Saves flag that lesson has been completed to local store and remote database
@@ -72,6 +72,34 @@ function useLessonViewHistory(fire, store) {
         return { dbRef, snapShot }
     }
 
+    const viewHistory = ref({})
+
+    const getLessonsViewHistories = async({userId}) => {
+        try {
+            // alert('in getLessonsViewHistories, userId is ' + userId)
+
+            const dbRef = fire.database.ref('views/' + userId)
+            const snapShotViewHistories = await dbRef.once('value')
+
+            // alert('in getLessonsViewHistories, history count is ' + Object.keys(snapShotViewHistories.val()).length)
+
+            snapShotViewHistories.forEach((childSnapshot) => {
+                // alert('in getLessonsViewHistories, childSnapshot is ' + childSnapshot.key)
+                viewHistory.value[childSnapshot.key] = {
+                    ended: childSnapshot.child('ended').val(),
+                    playhead: childSnapshot.child('playhead').val(),
+                    started: childSnapshot.child('started').val()
+                }
+            })
+
+            // alert('in getLessonsViewHistories, number of history lines: ' + Object.keys(viewHistory.value).length)
+
+            return viewHistory.value
+
+        } catch(e) {
+            alert('Error in getLessonsViewHistories, error is ' + e)
+        }
+    }
 
     // Saves last playhead to local store and remote database
     const saveLastPlayHeadTime = async ({ userId, lessonId, currentTime }) => {
@@ -141,7 +169,42 @@ function useLessonViewHistory(fire, store) {
         } catch (e) {
             alert('In getDownloadUrl, error is: ' + e.message)
         }
-    
+    }
+
+    // const viewPendingUrl = async() => {
+    //     try {
+    //         var ref = fire.storage.ref('icons/views/pending-state.svg')
+    //         const url = await ref.getDownloadURL()
+
+    //         //alert('Here is the url: ' + url)
+
+    //         return url
+    //     } catch (e) {
+    //         alert('In getDownloadUrl, error is: ' + e.message)
+    //     }
+    // }
+
+    const getViewStatusIcons = async() => {
+        try {
+            var ref = fire.storage.ref('icons/views/pending-state.svg')
+            const pending = await ref.getDownloadURL()
+
+            ref = fire.storage.ref('icons/views/in-progress-state.svg')
+            const inprogress = await ref.getDownloadURL()
+
+            ref = fire.storage.ref('icons/views/completed-state.svg')
+            const completed = await ref.getDownloadURL()
+
+            //alert('Here is the url: ' + url)
+
+            return {
+                pending,
+                inprogress,
+                completed
+            }
+        } catch (e) {
+            alert('In getViewStatusIcons, error is: ' + e.message)
+        }
     }
 
     return {
@@ -151,6 +214,8 @@ function useLessonViewHistory(fire, store) {
         saveLessonCompleted,
         getLessonViewHistory,
         getDownloadUrl,
+        getLessonsViewHistories,
+        getViewStatusIcons
         
     }
   }

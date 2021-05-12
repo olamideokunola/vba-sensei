@@ -4,7 +4,7 @@
       <div 
         v-for="lesson in _lessons"
         :key="lesson.id"
-        class="container flex flex-row justify-between text-gray bg-white px-4 py-4 mt-4">
+        class="container flex flex-col sm:flex-row justify-between text-gray bg-white px-4 py-4 mt-4">
           <!-- Video Description -->
           <div 
             class="w-7/8">
@@ -12,7 +12,7 @@
               <p>{{ lesson.videoFileName }}</p>
 
               <!-- Action Buttons -->
-              <div class="mt-8">
+              <div class="my-2 sm:mt-8">
                   <button class="bg-gray text-sm text-white rounded-full px-6 py-1"
                   >Edit</button>
                   <button 
@@ -30,7 +30,7 @@
           <video 
             :src="lesson.videoUrl"
             :autoplay="false"
-            class="w-64 bg-gray rounded" 
+            class="w-full sm:w-64 bg-gray rounded" 
             width="64" 
             height="48"
             controls
