@@ -4,6 +4,9 @@
   "description": "app for training on vba",
   "author": "Olamide Okunola",
   "private": true,
+  "engines": {
+    "node": "15.x"
+  },
   "scripts": {
     "dev": "nuxt --hostname '0' --port 3000",
     "build": "nuxt build",
