@@ -49,8 +49,9 @@
                 :key="id"
                 @click="setCurrentVideo(id, lesson)"
                 >
-                    <p>{{id+1}}. {{lesson.title}}</p>
+                    <p class="w-48 ">{{id+1}}. {{lesson.title}}</p>
                     <ViewStatusIcons
+                        class="w-24 "
                         :viewStatusIcons="viewStatusIcons"
                         :viewHistory="lesson.viewHistory"
                     ></ViewStatusIcons>
