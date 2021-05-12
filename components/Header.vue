@@ -1,18 +1,18 @@
 
 <template>
-    <div class="container mx-auto px-8 menu flex flex-row items-center justify-between">
-        <div data-test="logo" class="sm:p-4 py-6 flex flex-row items-center justify-between">
-
+    <div class="container mx-auto px-8 menu flex flex-row items-center justify-between ">
+        <div data-test="logo" class="sm:p-4 py-6 w-full sm:w-1/4 flex flex-row items-center justify-between ">
+<!--  class="w-4/6 sm:w-2/6" -->
             <nuxt-link 
-                class="w-4/6 sm:w-2/6"  
+                class="flex flex-row align-start justify-start "  
                 to="/"                
                 > 
-                <img class="" src="~/assets/imgs/vba sensei 3.png">
+                <img class="logo self-start " src="~/assets/imgs/vba sensei 3.png">
             </nuxt-link>
 
             <img
                 @click="showMenu(event)" 
-                class="sm:hidden" 
+                class="sm:hidden " 
                 src="~/assets/imgs/hamburger.svg"
                 >
 
@@ -95,13 +95,13 @@
             </div>
         </div>
 
-        <div class="sidemenu p-4 hidden sm:flex sm:flex-row items-center justify-between">
+        <div class="sidemenu p-4 hidden sm:flex flex-row items-center justify-between ">
             <!-- v-if="$auth.loggedIn"> -->
             <!-- v-if="!$fireModule.auth.user.isAnonymous"> -->
             <!-- {{ isLoggedIn }}
             {{ authUser }}
             {{ actions }} -->
-            <div class="flex flex-row" 
+            <div class="flex flex-row w-full" 
                 v-if="isLoggedIn">
                 <!-- logout button -->
                 <button
@@ -118,6 +118,7 @@
             
             
             <div 
+                class="flex flex-row"
                 v-else
                 >
                 <!-- login -->
@@ -130,7 +131,7 @@
                 </nuxt-link>
                 <!-- register -->
                 <nuxt-link to="/register">
-                    <button class="bg-black shadow-md hover:bg-gray text-white px-4 py-2 rounded-full transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                    <button class="bg-black shadow-md hover:bg-gray text-white px-4 py-2 sm:ml-4 rounded-full transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                         Register
                     </button>
                 </nuxt-link>
@@ -249,6 +250,12 @@ export default {
     left: 0;
     top: 0;
     background-color: white;
+}
+
+@media screen and (max-width: 600px) {
+    .logo {
+        width: 250px
+    }
 }
 
 /* 
