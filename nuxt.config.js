@@ -34,7 +34,6 @@ export default {
   */
   plugins: [
     {src: '~/plugins/vue-core-video-player.js', mode: 'client'},
-    {src: '~/plugins/windowPlugin.js', mode: 'client'}
   ],
   /*
   ** Nuxt.js dev-modules
