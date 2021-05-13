@@ -280,11 +280,6 @@ export default {
             alert('Error! ${e}')
         }
 
-        
-
-
-
-
         return {
             video_course,
             current_video,

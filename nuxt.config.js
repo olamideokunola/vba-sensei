@@ -33,7 +33,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {src: '~/plugins/vue-core-video-player.js', mode: 'client'}
+    {src: '~/plugins/vue-core-video-player.js', mode: 'client'},
+    {src: '~/plugins/windowPlugin.js', mode: 'client'}
   ],
   /*
   ** Nuxt.js dev-modules

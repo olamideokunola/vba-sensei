@@ -1,6 +1,6 @@
 
 <template>
-    <div class="container mx-auto px-8 menu flex flex-row items-center justify-between ">
+    <div id="header" class="container mx-auto px-8 menu flex flex-row items-center justify-between ">
         <div data-test="logo" class="sm:p-4 py-6 w-full sm:w-1/4 flex flex-row items-center justify-between ">
 <!--  class="w-4/6 sm:w-2/6" -->
             <nuxt-link 
@@ -150,7 +150,7 @@ import {
     ref,
     computed,
     useAsync,
-    useStore
+    useStore,
   } from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
 import { useAuthRepositories } from '~/service_components/video_courses/useAuthRepositories.js'
@@ -222,6 +222,7 @@ export default {
             displayMenu.value = !displayMenu.value
         }
 
+       
         return {
             menuitems,
             logout,
@@ -230,7 +231,8 @@ export default {
             hamburger,
             auth,
             displayMenu,
-            showMenu
+            showMenu,
+            
         }
 
     }, 
