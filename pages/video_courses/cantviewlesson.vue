@@ -23,7 +23,7 @@
             title="Account Status"
             ctaText="Notify Admin"
             ctaUrl=""
-            :ctaAction="notifyAdmin"
+            :ctaAction="_sendActivationRequestToAdmin"
         >
         
         <p class="text-center sm:text-left text-2xl" >
@@ -57,27 +57,29 @@ import {
   useAsync,
 } from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
+import { useAuthRepositories } from '~/service_components/video_courses/useAuthRepositories.js'
+
 
 export default {
     components: {
         LinkButton,
         StatusSection
     },
-    setup(props, { root: { $fire}}) {
+    setup(props) {
+
+    const { 
+            sendActivationRequestToAdmin
+        } = useAuthRepositories()
+
         const feedback = ref('')
         const showFeedback = ref(false)
-        const notifyAdmin = () => {
-            showFeedback.value = true
-            setTimeout(
-                function(){
-                     showFeedback.value = false 
-                }, 
-                5000
-            );
+
+        const _sendActivationRequestToAdmin = () => {
+            sendActivationRequestToAdmin(showFeedback)
         }
         
         return {
-            notifyAdmin,
+            _sendActivationRequestToAdmin,
             showFeedback,
             feedback
         }

@@ -1,7 +1,7 @@
 <template>
     <div class="container flex flex-row items-center">
         
-        <input class="rounded px-4 py-2 w-1/2" v-model="searchText" placeholder="Find courses"/>
+        <input class="rounded px-4 py-2 w-1/2" v-model="searchText" :placeholder="placeholder"/>
         
         <button class="w-24 text-white bg-primary px-4 py-2 rounded-xl ml-4" type=button>
             Search
@@ -22,6 +22,12 @@ export default {
   auth: false,
   components: {
     
+  },
+  props: {
+    placeholder: {
+      type: String,
+      default: "Search"
+    }
   },
   // layout: 'home',
   setup(props, { root: { $fire } }) {

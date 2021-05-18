@@ -2,13 +2,14 @@
   <div class="flex flex-col align-center">
       <!-- Sign in Title -->
       <div class="bg-primary flex flex-col align-middle justify-center">
-          <h1 class="container mx-auto px-12 text-6xl text-white text-center font-bold">Sign in</h1>
+          <h1 class="container mx-auto px-12 text-6xl text-white text-center font-bold">Reset Password</h1>
       </div>
       <div class="container mx-auto max-w-xl flex flex-col align-middle justify-center px-8 sm:px-0">
         <UserAuthForm
           class="m-8"
-          :submitForm="signInUser"
-          buttonText="Sign in"
+          :submitForm="resetPassword"
+          buttonText="Reset password"
+          :hasPassword="false"
           >
         </UserAuthForm>
       </div>
@@ -38,10 +39,10 @@ export default {
   },
   setup(props) {
 
-    const { signInUser } = useAuthRepositories()
+    const { resetPassword } = useAuthRepositories()
 
     return {
-      signInUser
+      resetPassword
     }
   }
 }

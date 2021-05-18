@@ -27,6 +27,7 @@
           px="12"
           bgColor="black"
           :ctaAction="ctaAction"
+          :badge="ctaBadge"
           ></LinkButton>
     </SectionBox>
 </template>
@@ -61,6 +62,15 @@ export default {
         type: Function,
         default: function() {
           return ''
+        }
+      },
+      ctaBadge: {
+        type: Object,
+        default: function() {
+          return {
+            active: false,
+            itemCount: 0
+          }
         }
       }
   },

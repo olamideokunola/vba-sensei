@@ -9,6 +9,7 @@
             :link="headerMenuItem.link"
             px="2"
             bgColor="gray"
+            :badge="headerMenuItem.badge"
         ></LinkButton>
     </div>
 </template>

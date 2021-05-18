@@ -34,9 +34,9 @@ export default {
   components: {
     UserAuthForm
   },
-  setup(props, { root: { $fire }}) {
+  setup(props) {
 
-    const { registerUser } = useAuthRepositories($fire)
+    const { registerUser } = useAuthRepositories()
 
     return {
       registerUser

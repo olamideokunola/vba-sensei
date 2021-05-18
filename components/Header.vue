@@ -164,21 +164,13 @@ export default {
             isLoggedIn,
             authUser,
             auth
-        } = useAuthRepositories($fire)
+        } = useAuthRepositories()
 
         const {
             getImageUrl,
         } = useUtils($fire)
 
         const hamburger = ref('')
-
-        useFetch(async () => {
-            try {
-                // hamburger.value = await getImageUrl('icons/nav/hamburger.svg')
-            } catch(e) {
-                alert('Error in fetch, message: ' + e)
-            }
-        })
 
         const allMenuItems = ref([
             { name: 'Dashboard',

@@ -8,9 +8,13 @@ import {
     useRouter
 } from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
-function useUserRepositories(fire) {
+function useUserRepositories() {
 
     const router = useRouter()
+
+    const context = useContext()
+
+    const fire = context.$fire
 
     var userItems = ref([])
 
@@ -68,7 +72,7 @@ function useUserRepositories(fire) {
             return activeUserStatuses
 
         } catch (e) {
-            alert('Error in getActiveUserStatuses ' + e.message)
+            console.log('Error in getActiveUserStatuses ' + e.message)
         }
         
     }
@@ -95,12 +99,78 @@ function useUserRepositories(fire) {
         return userItems.value
     }
 
+    const getUserIdsWithActivationRequest = async () => {
+        try {
+            const userIdsRef = fire.database.ref('activationrequests')
+            const userIdsSnapshot = await userIdsRef.once('value')
+
+            var userIds = []
+        
+            userIdsSnapshot.forEach((snapshot) => {
+                if(snapshot.val()) {
+                    userIds.push(snapshot.key)
+                }                
+            })
+
+            // alert('userItems: ' + userItems.value[0].name)
+            return userIds
+
+        } catch (e) {
+            alert('Error in getUserIdsWithActivationRequest, message: ' + e)
+        }
+    }
+
+    const getActivationRequestsBadge = async() => {
+        try {
+            // alert('getActivationRequestsBadge')
+            const activationRequests = await getUserIdsWithActivationRequest()
+
+            if(activationRequests.length > 0) {
+                return {
+                    active: true,
+                    itemCount: activationRequests.length
+                } 
+            }  else {
+                return {
+                    active: false,
+                    itemCount: 0
+                } 
+            }
+        } catch(e) {
+            alert('In getActivationRequestsBadge, error is ' + e) 
+        }
+    }
+ 
+    const getUsersRequestingActivation = async () => {
+        try {
+            var userIdsWithActivationRequest = await getUserIdsWithActivationRequest()
+            var users = await getUsers()
+
+            return users.filter(user => {
+                if(userIdsWithActivationRequest.find((id) => id === user.id) ) {
+                    return true
+                }
+                return false
+            })
+        } catch (e) {
+            alert('Error in getUsersRequestingActivation, message: ' + e)
+        }
+        
+    }
+
+
+
     const setUserActiveStatus = async (userItem) => {
         try {
             // Get course Ref and set
             const dbRef = fire.database.ref('activeusers/' + userItem.id)
+            const dbActivationRequestRef = fire.database.ref('activationrequests/' + userItem.id)
 
             dbRef.set(userItem.active)
+
+            if(dbActivationRequestRef && userItem.active){
+                dbActivationRequestRef.set(false)
+            }
         
         } catch (e) {
             alert('Error in setUserActiveStatus, message: ' + e.message)
@@ -122,7 +192,7 @@ function useUserRepositories(fire) {
     }
 
     const createUser = (userInfo) => {
-        alert('In createUser')
+        // alert('In createUser')
 
         var dbRef = fire.database.ref('users/' + userInfo.uid)
         var date = new Date()
@@ -162,8 +232,11 @@ function useUserRepositories(fire) {
  
     return {
         getUsers,
+        getUsersRequestingActivation,
         setUserActiveStatus,
         getRemoteProfilePlaceholderUrl,
+        createUser,
+        getActivationRequestsBadge
     }
 }
 

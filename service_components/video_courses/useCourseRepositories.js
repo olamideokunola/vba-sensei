@@ -24,7 +24,7 @@ function useCourseRepositories(fire) {
 
     const {
         authUser
-    } = useAuthRepositories(fire)
+    } = useAuthRepositories()
     
     const getLevels = async () => {
         // get levels

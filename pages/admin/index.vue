@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center sm:items-start content-between px-4 sm:px-20 py-4 bg-lightblue">
-        
+        <TopButton></TopButton>
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center py-4 sm:pt-4 sm:pb-8">
           <h1 class="text-2xl  flex flex-row text-center sm:text-left font-bold pb-4 sm:mt-0 sm:pb-0 sm:pr-3">Admin Dashboard</h1>
@@ -18,6 +18,7 @@
               link="#users"
               px="6"
               bgColor="gray"
+              :badge="activationRequestsBadge"
               ></LinkButton>
           </div>
         </div>
@@ -29,7 +30,7 @@
           :items="statusOfCourses"
           ctaText="Manage Courses"
           ctaUrl="admin/managecourses"
-        >Courses</StatusSection>
+        ></StatusSection>
 
         <!-- Users -->
         <StatusSection 
@@ -39,7 +40,9 @@
           :items="statusOfUsers"
           ctaText="Manage Users"
           ctaUrl="admin/manageusers"
-        >Courses</StatusSection>
+          :ctaBadge="activationRequestsBadge"
+        ></StatusSection>
+        
     </div>
 </template>
 
@@ -53,17 +56,25 @@ import {
 
 import LinkButton from '~/components/LinkButton.vue'
 import StatusSection from '~/components/Section_Dashboard.vue'
+import TopButton from '~/components/TopButton.vue'
+
+import { useUserRepositories } from '~/service_components/video_courses/useUserRepositories.js'
 
 export default {
   // auth: false,
   components: {
     LinkButton,
-    StatusSection
+    StatusSection,
+    TopButton
   },
   middleware: ['authenticated',],
   // layout: 'home',
   setup(props, { root: { $fire } }) {
 
+    const { 
+      getActivationRequestsBadge
+    } = useUserRepositories()
+    
     const _statusOfCourses = ref([])
     const statusOfCourses = ref([])
 
@@ -92,7 +103,7 @@ export default {
       statusOfCourses.value = 
       {
         "Number of courses": _statusOfCourses.value.length,
-        "Active courses": activeCourses,
+        "Active courses": activeCourses ? 1 : activeCourses,
         "Inactive courses": _statusOfCourses.value.length - activeCourses,
       }
 
@@ -116,6 +127,8 @@ export default {
         "Inactive users": _statusOfUsers.value.length - activeUsers,
       }
 
+      // Load Activation Request Badges
+      activationRequestsBadge.value = await getActivationRequestsBadge()
     })
 
     const updateStatusFields = (eventType, statusDisplayObj, itemStatus, itemName) => {
@@ -174,9 +187,12 @@ export default {
       updateStatusFields("removed", statusOfUsers, userStatus, "users")
     })
 
+    const activationRequestsBadge = ref({})
+
     return {
       statusOfCourses,
-      statusOfUsers
+      statusOfUsers,
+      activationRequestsBadge
     }
   }
 }

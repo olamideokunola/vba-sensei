@@ -1,16 +1,14 @@
 <template>
     <div class="flex flex-col items-start content-between px-4 sm:px-20 py-4 bg-lightblue">
         <HeaderInPage
-            title="Manage Users"
+            title="Activation Requests"
             :menuItems=menuItems
         >
         </HeaderInPage>
-
-        <SearchBox placeholder="Find users"></SearchBox>
 <!-- {{dbuserItems}} -->
         <ListSectionBox 
             class="mt-6" 
-            title="Users" 
+            title="Pending Requests" 
             :currentPage="currentPage.value"
             :itemsCount="totalItems"
             :itemsPerPage="itemsPerPage"
@@ -68,9 +66,8 @@ export default {
     const page = ref(1)
     
     const { 
-            getUsers, 
+            getUsersRequestingActivation, 
             getRemoteProfilePlaceholderUrl,
-            getActivationRequestsBadge
         } = useUserRepositories()
 
     const dbUserItems = ref([
@@ -123,43 +120,21 @@ export default {
 
     const profilePlaceholderUrl = ref('')
 
-    const activationRequestsBadge = ref({})
-
     useFetch(async() => { 
         //
-        
-        dbUserItems.value = await getUsers() 
+        dbUserItems.value =  await getUsersRequestingActivation() 
         // alert('in usefetch')
 
         profilePlaceholderUrl.value = await getRemoteProfilePlaceholderUrl()
         // alert('in usefetch profilePlaceholderUrl is ' + profilePlaceholderUrl.value)
         // $store.dispatch('video_courses/loadCoursesToStore', await getCourses())       
-
-        activationRequestsBadge.value = await getActivationRequestsBadge()
-                    
-        // if(activationRequests.value.length > 0) {
-        //     activationRequestsBadge.value = {
-        //         active: true,
-        //         itemCount: activationRequests.value.length
-        //     } 
-        // }    
     })
 
-    
-    const menuItems = computed(() => [
+    const menuItems = ref([
         {
             title: "Back",
-            link: "/admin",
-            badge: {
-                active: false,
-                itemCount: 0
-            }
-        },
-        {
-            title: "Requests",
-            link: "/admin/manageusers/activationrequests",
-            badge: activationRequestsBadge.value
-        },
+            link: "/admin/manageusers"
+        }
     ])
 
     const maxPage = computed(() => Math.ceil(totalItems.value / itemsPerPage.value))
