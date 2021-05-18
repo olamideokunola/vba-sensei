@@ -1,12 +1,9 @@
 <template>
   <div class="">
-    <div 
-      v-if="showUpButton"
-      class="flex flex-col floating-button rounded-full w-16 h-16 bg-black justify-center border-black border-2">
-      <a href="#header">
-        <p class="text-primary text-center">Top</p>
-      </a>
-    </div>
+
+    <!-- Button to scroll to top of page -->
+    <TopButton></TopButton>
+
     <!--Learning Paths-->
     <div class="bg-primary py-8 flex sm:flex-row sm:align-center sm:justify-around flex-col">
       <div class="sm:pl-16 sm:pr-0 sm:py-8 py-12 flex flex-col contents-center">
@@ -91,7 +88,9 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+
+import TopButton from '~/components/TopButton.vue'
+
 
 import {
   defineComponent,
@@ -108,7 +107,7 @@ import {
 export default {
   auth: false,
   components: {
-
+    TopButton
   },
   // layout: 'home',
   setup(props, { root: { $fire, } }) {
@@ -135,36 +134,8 @@ export default {
     //   }
     // )
 
-    const showUpButton = ref(false)
-
-    const onScroll = () => {
-        // alert('scroll event just occured!')
-        if(window.scrollTop > 100)
-        {
-          
-        }
-    }
-
-    onMounted(() => {
-        window.addEventListener('scroll', () => {
-            if(window.pageYOffset > 300) {
-            // alert('scrollTop > 300')  
-              showUpButton.value = true          
-            } else if(window.screenTop == 0) {
-              showUpButton.value = false          
-            }
-        })
-    })
-
-    onBeforeUnmount(() => {
-    window.removeEventListener('scroll', onScroll)
-    //state.scrollPos = mainDoc.value.scrollTop
-    // state.scrollPos = mainDoc.value.ownerDocument.defaultView.scrollTop
-    })
-
     return {
-      item,   
-      showUpButton   
+      item
     }
   }
 }
@@ -199,18 +170,6 @@ export default {
 
 html {
   scroll-behavior: smooth;
-}
-
-.floating-button {
-  position: fixed;
-  z-index: 999;
-  bottom: 10px;
-  right: 10px;
-  opacity: 0.7;
-}
-
-.floating-button:hover {
-  opacity: 1.0;
 }
 
 @media only screen and (max-width: 600px) {

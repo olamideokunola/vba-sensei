@@ -11,11 +11,18 @@ import {
 
 // import { mapGetters } from 'vuex'
 
-function useAuthRepositories(fire) {
+import { useUserRepositories } from '~/service_components/video_courses/useUserRepositories.js'
+
+function useAuthRepositories() {
+
+    const context = useContext()
 
     const store = useStore()
+    
     const router = useRouter()
     
+    const fire = context.$fire
+
     const isLoggedIn = computed(() => store.getters['auth/isLoggedIn'])
     
     const authUser = computed(() => store.getters['auth/authUser'])
@@ -56,6 +63,8 @@ function useAuthRepositories(fire) {
         }
     }
 
+    const { createUser } = useUserRepositories()
+
     const registerUser = async (registrationInfo) => {
         try {
           await fire.auth.createUserWithEmailAndPassword(
@@ -88,13 +97,49 @@ function useAuthRepositories(fire) {
         // alert('You pressed signin button')
     }
 
+    const sendActivationRequestToAdmin = (showFeedback) => {
+        // alert('sendActivationRequestToAdmin, key 1 is ' + Object.keys(authUser)[0])
+
+        // Object.keys(authUser).forEach((key) => {
+        //     alert(key)
+        // })
+
+        const dbRef = fire.database.ref("activationrequests/" + authUser.value.uid)
+        dbRef.set(true)
+
+        showFeedback.value = true
+        setTimeout(
+            function(){
+                showFeedback.value = false 
+            }, 
+            5000
+        );
+    }
+
+    const resetPassword = async (loginInfo) => {
+        try {
+            
+            // alert('In resetPassword')
+            await fire.auth.sendPasswordResetEmail(
+                loginInfo.email,
+            )
+
+            
+
+        } catch (e) {
+            alert('In resetPassword' + e)
+        }
+    }
+
     return {
         logout,
         isLoggedIn,
         authUser,
         registerUser,
         signInUser,
-        auth
+        auth,
+        sendActivationRequestToAdmin,
+        resetPassword
     }
   }
 
