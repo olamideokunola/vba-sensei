@@ -193,13 +193,14 @@ function useUserRepositories() {
 
     const createUser = (userInfo) => {
         // alert('In createUser')
+        console.log(`in createUser, userId is ${userInfo.uid}, email is ${userInfo.email}`)
 
         var dbRef = fire.database.ref('users/' + userInfo.uid)
         var date = new Date()
         var day = date.getDate()
         var year = date.getFullYear()
         var months = [
-            'Janaury',
+            'January',
             'February',
             'March',
             'April',

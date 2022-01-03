@@ -40,7 +40,8 @@ function useAuthRepositories() {
             // alert('Signin completed!')
             localStorage.setItem('isLoggedIn', true)
             router.push('/')
-
+            
+            console.log('about to sign in')
             // store.dispatch('auth/setUserAsAdmin')
 
         } catch (e) {
@@ -71,13 +72,15 @@ function useAuthRepositories() {
             registrationInfo.email,
             registrationInfo.password
           )
-          console.log('Signin successful!')
+          console.log('In register user, Signin successful!')
   
           // Save UserName
           var user = fire.auth.currentUser
           await user.updateProfile({
             displayName: registrationInfo.name
           })
+
+          console.log(`In register user, about to create user, id is ${user.uid}`)
 
           // Save user profile in database
           createUser({
@@ -123,8 +126,6 @@ function useAuthRepositories() {
             await fire.auth.sendPasswordResetEmail(
                 loginInfo.email,
             )
-
-            
 
         } catch (e) {
             alert('In resetPassword' + e)

@@ -2,13 +2,13 @@
   <div class="">
 
     <!-- Button to scroll to top of page -->
-    <TopButton></TopButton>
+    <TopButton/>
 
     <!--Learning Paths-->
     <div class="bg-primary py-8 flex sm:flex-row sm:align-center sm:justify-around flex-col">
       <div class="sm:pl-16 sm:pr-0 sm:py-8 py-12 flex flex-col contents-center">
         <div
-          class="sm:hidden text-4xl text-center font-bold text-white pb-16">
+          class="sm:hidden text-3xl text-center font-bold text-white pb-16">
             Obtain access to great <br>
             learning resources <br>
             for VBA Developers

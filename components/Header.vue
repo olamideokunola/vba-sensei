@@ -18,19 +18,7 @@
 
         </div>
 
-        <!-- Large Screen Menu -->
-        <div data-test="menu" class="menu sm:flex sm:flex-row hidden ">
-            <ul
-                v-for="(menuitem, id) in menuitems"
-                :key="id"
-                >
-                <li 
-                    data-test="menuitem"
-                    class="p-2">
-                    <nuxt-link :to="menuitem.link" class="text-gray-900 text-xl hover:font-bold" href="/">{{ menuitem.name }}</nuxt-link>
-                </li>
-            </ul>
-        </div>
+        
 
         <!-- Small Screen Menu -->
         <div 
@@ -101,6 +89,21 @@
             <!-- {{ isLoggedIn }}
             {{ authUser }}
             {{ actions }} -->
+
+            <!-- Large Screen Menu -->
+            <div data-test="menu" class="menu sm:flex sm:flex-row hidden pr-8">
+                <ul
+                    v-for="(menuitem, id) in menuitems"
+                    :key="id"
+                    >
+                    <li 
+                        data-test="menuitem"
+                        class="p-2">
+                        <nuxt-link :to="menuitem.link" class="text-gray-900 text-xl hover:font-bold " href="/">{{ menuitem.name }}</nuxt-link>
+                    </li>
+                </ul>
+            </div>
+
             <div class="flex flex-row w-full" 
                 v-if="isLoggedIn">
                 <!-- logout button -->
@@ -115,7 +118,6 @@
                    {{authUser.displayName}}
                 </div>
             </div>
-            
             
             <div 
                 class="flex flex-row"
@@ -173,24 +175,24 @@ export default {
         const hamburger = ref('')
 
         const allMenuItems = ref([
-            { name: 'Dashboard',
-                link: '/',
-            },
+            // { name: 'Dashboard',
+            //     link: '/',
+            // },
             { name: 'Courses',
                 link: '/video_courses'
             },
-            { name: 'Classes',
-                link: '/'
-            },
-            { name: 'Blog',
-                link: '/'
-            },
-            { name: 'Search',
-                link: '/'
-            },
-            { name: 'Q&A',
-                link: '/'
-            },
+            // { name: 'Classes',
+            //     link: '/'
+            // },
+            // { name: 'Blog',
+            //     link: '/'
+            // },
+            // { name: 'Search',
+            //     link: '/'
+            // },
+            // { name: 'Q&A',
+            //     link: '/'
+            // },
             { name: 'Admin',
                 link: '/admin',
                 admin: true

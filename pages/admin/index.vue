@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center sm:items-start content-between px-4 sm:px-20 py-4 bg-lightblue">
-        <TopButton></TopButton>
+        <TopButton/>
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center py-4 sm:pt-4 sm:pb-8">
           <h1 class="text-2xl  flex flex-row text-center sm:text-left font-bold pb-4 sm:mt-0 sm:pb-0 sm:pr-3">Admin Dashboard</h1>

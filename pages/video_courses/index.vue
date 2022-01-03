@@ -33,7 +33,7 @@
         >
         <h1 class="text-center text-primary text-4xl font-bold" :id="levelAndCourse.level">{{levelAndCourse.level}}</h1>
         <div
-            v-for="(video_course, id) in levelAndCourse.video_courses"
+            v-for="(video_course, id) in levelAndCourse.video_courses.slice().reverse()"
             v-bind:key="id"
             >
             <nuxt-link :to="'/video_courses/' + video_course.title">

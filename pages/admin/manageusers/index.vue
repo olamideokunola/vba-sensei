@@ -18,8 +18,7 @@
             @prev="prevPage"
             data-test='userslist'
         >
-
-            <template  v-slot:items>
+            <template v-slot:items>
                 <div
                     data-test='useritem'
                     :to="'manageusers/edituser/'+userItem.id"

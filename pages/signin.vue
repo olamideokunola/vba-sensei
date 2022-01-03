@@ -18,33 +18,33 @@
 
 <script>
 
-import {
-  defineComponent,
-  useFetch,
-  useContext,
-  ref,
-  computed,
-  watchEffect,
-  watch
-} from '@nuxtjs/composition-api' //'nuxt-composition-api'
+  import {
+    defineComponent,
+    useFetch,
+    useContext,
+    ref,
+    computed,
+    watchEffect,
+    watch
+  } from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
-import UserAuthForm from '~/components/UserAuthForm.vue'
+  import UserAuthForm from '~/components/UserAuthForm.vue'
 
-import { useAuthRepositories } from '~/service_components/video_courses/useAuthRepositories.js'
+  import { useAuthRepositories } from '~/service_components/video_courses/useAuthRepositories.js'
 
-export default {
-  components: {
-    UserAuthForm
-  },
-  setup(props) {
+  export default {
+    components: {
+      UserAuthForm
+    },
+    setup(props) {
 
-    const { signInUser } = useAuthRepositories()
+      const { signInUser } = useAuthRepositories()
 
-    return {
-      signInUser
+      return {
+        signInUser
+      }
     }
   }
-}
 </script>
 
 <style>
