@@ -61,10 +61,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-8 text-center sm:text-left">
+                    <!-- <div class="p-8 text-center sm:text-left">
                         <h1 class="max-w-3xl text-black text-4xl sm:text-5xl font-bold">{{video_course.title}}</h1>
                         <p class="max-w-3xl">{{video_course.description}} </p>
-                    </div>
+                    </div> -->
                 </div>
             </nuxt-link>
         </div>

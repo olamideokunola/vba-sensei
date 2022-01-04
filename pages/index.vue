@@ -7,21 +7,21 @@
     <!--Learning Paths-->
     <div class="bg-primary py-8 flex sm:flex-row sm:align-center sm:justify-around flex-col">
       <div class="sm:pl-16 sm:pr-0 sm:py-8 py-12 flex flex-col contents-center">
-        <div
+        <h1
           class="sm:hidden text-3xl text-center font-bold text-white pb-16">
             Obtain access to great <br>
             learning resources <br>
             for VBA Developers
-        </div>
+        </h1>
         <img class="w-4/6 sm:w-4/6 self-center" src="~/assets/imgs/route3.png"/>
       </div>
       <div class="bg-primary sm:py-4 sm:pr-16 sm:pl-0 sm:bg-local py-4 learning-path-bkg flex flex-col">
-        <div
+        <h1
           class="hidden sm:block sm:text-6xl text-2xl text-center font-bold text-white">
             Obtain access to great <br>
             learning resources <br>
             for VBA Developers
-        </div>
+        </h1>
 
         <div class="text-white text-center sm:mt-12 mt-6 text-2xl"> 
           <p >Choose beginner or intermediate <br> learning paths <br></p>

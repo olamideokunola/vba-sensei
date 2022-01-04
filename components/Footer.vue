@@ -3,9 +3,9 @@
         <div class="flex flex-col">
             <img  class="logo align-center self-center sm:self-start" src="~/assets/imgs/vba sensei 3.png"/>
             <p class="text-center sm:text-left text-xl px-24 sm:px-0">
-                Find resources to aid your learning and use of VBA to <br>
-                your work efficiency and contribute to growth <br>
-                in your career
+                Find resources to help you learn and use VBA  <br>
+                so that you can improve your work efficiency and grow <br>
+                your career
             </p>
         </div>
         <div class="menu py-12 sm:py-0 flex flex-col">

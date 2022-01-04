@@ -7,11 +7,11 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: 'Learn to write macro with excel vba and boost your data analysis career', //|| process.env.npm_package_name,
+    title: 'Boost your data analysis skills with excel vba', //|| process.env.npm_package_name,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Learn to write macro with excel vba and boost your data analysis career' } //process.env.npm_package_description || '' }
+      { hid: 'description', name: 'description', content: 'Learn to write macro with excel vba and boost your data analysis skills' } //process.env.npm_package_description || '' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -74,6 +74,9 @@ export default {
         emulatorPort: isDev && useEmulators ? 9000 : undefined,
       },
       storage: true,
+      analytics: {
+        collectionEnabled: true // default
+      }
     }
   },
 

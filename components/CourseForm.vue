@@ -90,6 +90,13 @@
                 @click.prevent="$emit('addLesson', newLesson, videoFile)"
                 class="sm:w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
             />
+            
+            <!-- Lesson Text -->
+            <div>
+                <h1>Lesson Texts</h1>
+                <form-input text='Sub title' fieldName='Subtitle'></form-input>
+            </div>
+
 
             <!-- Videos -->
             <VideosList
@@ -118,13 +125,15 @@ import {
 
 import SectionBox from '~/components/SectionBox.vue'
 import VideosList from '~/components/VideosList_Form.vue'
+import FormInput from '~/components/FormInput.vue'
 
 import { useCourseRepositories } from '~/service_components/video_courses/useCourseRepositories.js'
 
 export default {
   components: {
       SectionBox,
-      VideosList
+      VideosList,
+      FormInput
   },
   // layout: 'home',
   props: {

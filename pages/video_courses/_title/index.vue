@@ -59,7 +59,11 @@
             
           </div>
       </div>
-
+      <!-- Lesson Text -->
+      <div>
+          <h1>{{video_course.title}}</h1>
+          <p>{{video_course.lesson_text}}</p>
+      </div>
   </div>
 </template>
 
@@ -170,7 +174,7 @@ export default {
                 
                 // alert('time ' + videoDOMobj.value.currentTime)
             } catch (e) {
-                alert('Error in onLoaded, error is ', e.message)
+                console.log('Error in onLoaded, error is ', e.message)
             }
         }
 
@@ -220,12 +224,12 @@ export default {
                         }
                     } catch(e) {
 
-                        alert('Error in currentLessonViewingHistoryRef, message is ' + e)
+                        console.log('Error in currentLessonViewingHistoryRef, message is ' + e)
                     } 
                 })
 
             } catch (e) {
-                alert('Error in useFetch, message is ' + e)
+                console.log('Error in useFetch, message is ' + e)
             }
             
         })
@@ -270,14 +274,14 @@ export default {
                     courses: {}
                 })
             } catch (e) {
-                alert('In saveUser, error: ' + e)
+                console.log('In saveUser, error: ' + e)
                 return
             }
             // alert('Success.')
         }
 
         const onError = (e) => {
-            alert('Error! ${e}')
+            console.log('Error! ${e}')
         }
 
         return {
