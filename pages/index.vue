@@ -113,7 +113,7 @@ export default {
   setup(props, { root: { $fire, } }) {
 
     const item = ref('item text')
-
+    // alert(process.env.NODE_ENV)
     // const mainDoc = ref(null)
 
     // const state = reactive({

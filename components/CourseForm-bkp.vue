@@ -1,4 +1,3 @@
-
 <template>
 
     <form 
@@ -51,7 +50,7 @@
             v-if="mode=='new'"
             value="Create new course"
             @click.prevent="$emit('submitNewCourse', { title, description, level, lessons })"
-            class="sm:w--1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
+            class="sm:w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
         />
 
         <input 
@@ -67,35 +66,45 @@
         <SectionBox 
             v-if="mode=='edit'"
             class="mt-8"
-            title="Lessons"
+            title="Create New Lesson"
             >
 
-            <template v-slot:actionbar>
-                <div class="flex flex-row">
-                <!-- new lesson button -->
-                    <LinkButton 
-                        displayText="Add Lesson" 
-                        link="../addlesson"
-                        bgColor="primary"
-                    ></LinkButton>
-                </div>
-            </template>
+            <label class="text-3xl mt-4 font-light" for="lessontitle" >Title</label>
+            <input 
+                name="lessontitle"
+                class="border-4 border-lightblue px-8 py-4 rounded-full text-xl"
+                v-model="newLesson.title"
+            />
 
-            <div class="grid grid-cols-3 bg-lightblue rounded-lg p-6 my-2" v-for='(lesson, index) in lessons' v-bind:key='index'> 
-                <div class="col-span-2">
-                    <p class="text-xs leading-3">Title</p>
-                    <h2 class="text-2xl font-thin">{{lesson.title}}</h2>
+            <label class="text-3xl mt-4 font-light" for="video" >Add Video</label>
+            <input 
+                name="video"
+                type="file"
+                @change="setVideoFile($event.target.files[0])"
+                class="border-4 border-lightblue px-8 py-4 rounded-full text-xl"
+            />
 
-                    <p class="text-xs mt-6 leading-3">Description</p>
-                    <h2 class="text-2xl font-thin">{{lesson.description}}</h2>
-                </div>
-
-                <div class="col-span-1">
-                    <div class="flex bg-black rounded h-40 w-80">
-                        
-                    </div>
-                </div>
+            <input 
+                type="submit"
+                value="Upload video"
+                @click.prevent="$emit('addLesson', newLesson, videoFile)"
+                class="sm:w-1/4 bg-primary text-white font-semibold self-end shadow px-8 py-4 mt-12 rounded-full text-xl"
+            />
+            
+            <!-- Lesson Text -->
+            <div>
+                <h1>Lesson Texts</h1>
+                <form-input text='Sub title' fieldName='Subtitle'></form-input>
             </div>
+
+
+            <!-- Videos -->
+            <VideosList
+                class="mt-8 rounded-xl"
+                :lessons="lessons"
+            >  
+            </VideosList>
+            <!-- {{lessons}} -->
         </SectionBox>
         
     </form>
@@ -117,7 +126,6 @@ import {
 import SectionBox from '~/components/SectionBox.vue'
 import VideosList from '~/components/VideosList_Form.vue'
 import FormInput from '~/components/FormInput.vue'
-import LinkButton from '~/components/LinkButton.vue'
 
 import { useCourseRepositories } from '~/service_components/video_courses/useCourseRepositories.js'
 
@@ -125,8 +133,7 @@ export default {
   components: {
       SectionBox,
       VideosList,
-      FormInput,
-      LinkButton,
+      FormInput
   },
   // layout: 'home',
   props: {
@@ -212,6 +219,9 @@ export default {
         description,
         lessons,
         disabled,
+        newLesson,
+        setVideoFile,
+        videoFile,
         levels,
         level
     }

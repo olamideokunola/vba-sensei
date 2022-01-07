@@ -81,6 +81,7 @@ function useCourseRepositories(fire) {
             {
                 id: childsnapshot.key,
                 title: childsnapshot.val().title,
+                description: childsnapshot.val().description,
                 videoFileName: childsnapshot.val().videoFileName,
                 viewHistory: lessonsViewHistories[childsnapshot.key]
             }
@@ -141,6 +142,32 @@ function useCourseRepositories(fire) {
 
     const courseLessons = ref([])
 
+    const getLessonSections = async(id) => {
+        try {
+            // alert('In get lesson`')
+            const lessonSections = []
+
+            const ref = fire.database.ref('lessonSections/'+id+'/sections')
+            const snapshot = await ref.once('value')
+            
+            snapshot.forEach((childsnapshot) => {
+                // alert('In foreach')
+                if(childsnapshot.val()){
+                    // var videoUrl =   await getDownloadUrl(childsnapshot.key)
+                    lessonSections.push({
+                        id: childsnapshot.key,
+                        title: lessons[childsnapshot.key].title,
+                        videoFileName: lessons[childsnapshot.key].videoFileName, 
+                        videoUrl: ''
+                    })
+                }
+            })
+
+        } catch(e) {
+            alert('in error is ' + e.message)
+        }
+    }
+
     const getCourseLessons = async(id) => {
         try {
             const lessons = await getLessons()
@@ -153,26 +180,30 @@ function useCourseRepositories(fire) {
 
             const _courselessons = []
 
-                snapshot.forEach((childsnapshot) => {
-                    // alert('In foreach')
-                    if(childsnapshot.val()){
-                        // var videoUrl =   await getDownloadUrl(childsnapshot.key)
-                        _courselessons.push({
-                            id: childsnapshot.key,
-                            title: lessons[childsnapshot.key].title,
-                            videoFileName: lessons[childsnapshot.key].videoFileName, 
-                            videoUrl: ''
-                        })
-                    }
-                })
+            snapshot.forEach((childsnapshot) => {
+                // alert('In foreach')
+                if(childsnapshot.val()){
+                    // var videoUrl =   await getDownloadUrl(childsnapshot.key)
+                    _courselessons.push({
+                        id: childsnapshot.key,
+                        title: lessons[childsnapshot.key].title,
+                        description: lessons[childsnapshot.key].description,
+                        videoFileName: lessons[childsnapshot.key].videoFileName, 
+                        videoUrl: ''
+                    })
+                }
+            })
 
             const promises = _courselessons.map(async (lesson) => {
                 // alert('in promises loop')
+                alert(lesson.title)
                 return {
                     id: lesson.id,
                     title: lesson.title,
+                    description: lesson.description,
                     videoFileName: lesson.videoFileName,
-                    videoUrl: await getDownloadUrl(lesson.id)
+                    videoUrl: await getDownloadUrl(lesson.id),
+                    lessonSections: await getLessonSections(lesson.id)
                 }
             })
 
@@ -182,7 +213,7 @@ function useCourseRepositories(fire) {
             return courseLessons.value
         
         } catch (e) {
-            alert('in error is ' + e.message)
+            console.log('in error is ' + e.message)
         }
     }
     

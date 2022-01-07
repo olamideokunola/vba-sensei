@@ -88,3 +88,10 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# firebase emulator files
+emu
+assets/videos/-MsOgnU97kohUH0OcuY2.mp4
+assets/videos/-MsOgUXUuDj846yxAjH4.mp4
+assets/videos/-MsOi6gtFeOYpMSz7HyF.mp4
+assets/videos/-MsOiOOVO8l-mSFUrWp7.mp4

@@ -60,10 +60,10 @@
           </div>
       </div>
       <!-- Lesson Text -->
-      <div>
+      <!-- <div>
           <h1>{{video_course.title}}</h1>
           <p>{{video_course.lesson_text}}</p>
-      </div>
+      </div> -->
   </div>
 </template>
 

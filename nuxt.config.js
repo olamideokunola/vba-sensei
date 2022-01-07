@@ -1,5 +1,5 @@
-const isDev = process.env.NODE_ENV === 'production'
-const useEmulators = false // manually change if emulators needed
+const isDev = process.env.NODE_ENV === 'development'
+const useEmulators = true // manually change if emulators needed
 
 export default {
   //mode: 'universal',
@@ -45,7 +45,6 @@ export default {
     '@nuxtjs/firebase',
     '@nuxtjs/composition-api/module'
   ],
-
   firebase: {
     lazy: false,
     config: {
@@ -69,11 +68,16 @@ export default {
         ssr: true,
         emulatorPort: isDev && useEmulators ? 9099 : undefined,
         disableEmulatorWarnings: false,
+        emulatorHost: 'http://localhost',
       },
       database: {
         emulatorPort: isDev && useEmulators ? 9000 : undefined,
+        emulatorHost: 'localhost',
       },
-      storage: true,
+      storage: {
+        emulatorPort: isDev && useEmulators ? 9199 : undefined,
+        emulatorHost:'localhost',
+      },
       analytics: {
         collectionEnabled: true // default
       }
@@ -170,5 +174,4 @@ export default {
     // }
 
 
-  }
-
+}

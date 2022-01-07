@@ -14,11 +14,11 @@
                 <div class="flex flex-row">
 
                 <!-- new course button -->
-                <LinkButton 
-                    displayText="New Course" 
-                    link="../newcourse"
-                    bgColor="primary"
-                ></LinkButton>
+                    <LinkButton 
+                        displayText="New Course" 
+                        link="../newcourse"
+                        bgColor="primary"
+                    ></LinkButton>
                 </div>
             </template>
 
@@ -31,7 +31,8 @@
                 @addLesson="addLesson"
                 v-bind="course"
                 :lessons="courselessons"
-                ></CourseForm>
+            ></CourseForm>
+
         </SectionBox>
         
     </div>
@@ -66,6 +67,7 @@ export default {
   middleware({store, route, redirect}){
 
   },
+  
   setup(props, { root: { $store, $fire, $route } }) {
 
     const menuItems = ref([

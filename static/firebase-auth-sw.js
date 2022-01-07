@@ -1,15 +1,17 @@
 const ignorePaths = ["\u002F__webpack_hmr","\u002F_loading","\u002F_nuxt\u002F"]
 
 importScripts(
-  'https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js'
+  'https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js'
 )
 importScripts(
-  'https://www.gstatic.com/firebasejs/8.3.2/firebase-auth.js'
+  'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js'
 )
 firebase.initializeApp({"apiKey":"AIzaSyBvQ1QlHAwZ91Vk7Hg2w2d1mzaUdbv62gs","authDomain":"vba-sensei.firebaseapp.com","projectId":"vba-sensei","storageBucket":"vba-sensei.appspot.com","messagingSenderId":"487786726058","appId":"1:487786726058:web:49c009d2171e6de44ac6d3","measurementId":"G-GSS4RP019D"})
 
 // Initialize authService
 const authService = firebase.auth()
+
+authService.useEmulator('http://localhost:9099')
 
 /**
  * Returns a promise that resolves with an ID token if available.
@@ -72,8 +74,16 @@ self.addEventListener('fetch', (event) => {
     return path.test(url.pathname.slice(1))
   })
 
+  // https://github.com/nuxt-community/firebase-module/issues/465
   if (!expectsHTML || !isSameOrigin || !isHttps || isIgnored) {
-    event.respondWith(fetch(event.request))
+    if (event.request.url.startsWith('https://www.googleapis.com/identitytoolkit/')) {
+      event.respondWith(
+        fetch({
+          ...event.request,
+          ...{ url: event.request.url.replace(/https:\/\//, 'http://localhost:9099/') }
+        })
+      )
+    } else event.respondWith(fetch(event.request))
 
     return
   }
