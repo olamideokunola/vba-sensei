@@ -102,15 +102,27 @@ import {
   reactive,
   onMounted,
   onBeforeUnmount,
+  useMeta
 } from '@nuxtjs/composition-api' //'nuxt-composition-api'
 
-export default {
+export default defineComponent({
   auth: false,
   components: {
     TopButton
   },
+  head: {},
   // layout: 'home',
   setup(props, { root: { $fire, } }) {
+
+    const { script } = useMeta()
+
+    // script.value = [
+    //   {
+    //     async: "async",
+    //     src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8473617981064925",
+    //     crossorigin: "anonymous"
+    //   }
+    // ]
 
     const item = ref('item text')
 
@@ -138,7 +150,7 @@ export default {
       item
     }
   }
-}
+})
 
 </script>
 
