@@ -172,6 +172,4 @@ export default {
     //   callback: '/signin',
     //   home: '/'
     // }
-
-
 }

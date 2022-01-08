@@ -8,7 +8,7 @@ function useManageCourse(courseAndLessons) {
     const { 
         getCourseWithId,
         getLessonsWithCourseId, 
-    } = useCourseDataRepository(courseData)
+    } = useCourseDataRepository()
 
     const createCourse = ({title, description}) => {
 
@@ -23,24 +23,39 @@ function useManageCourse(courseAndLessons) {
     }
 
     const getCourseAndLessons = async (courseId) => {
-        alert(courseId)
-        await getCourseWithId(courseId)
-        alert(`courseId: ` + 2)
-        let lessonsData = await getLessonsWithCourseId(courseId)
 
-        alert(`coursedata is ${Object.keys(courseData)}`)
+        try {
+            alert(courseId)
 
-        // let course = new Course({...courseData})
+            return await getCourseWithId(courseId)
+
+            // getCourseWithId(courseId, (courseData, lessonsData) => {
+
+            //     course = new Course(courseData)
+
+            //     course.addLessons(lessonsData)
+
+            //     setCourse(course)
+            // })
+
+            // alert(`coursedata is ${Object.keys(courseData)}`)
+
+            // let course = new Course({...courseData})
+            
+            // lessonsData.forEach((lessonData) => {
+            //     let newLesson = new Lesson({...lessonsData})
+            //     lessonsData.sections.forEach((section) => {
+            //         newLesson.addSection(new section({...section}))    
+            //     })
+            //     course.addLesson(newLesson)
+            // })
+
+            // courseAndLessons = course
+    
+        } catch (e) {
+            alert(e)
+        }
         
-        // lessonsData.forEach((lessonData) => {
-        //     let newLesson = new Lesson({...lessonsData})
-        //     lessonsData.sections.forEach((section) => {
-        //         newLesson.addSection(new section({...section}))    
-        //     })
-        //     course.addLesson(newLesson)
-        // })
-
-        // courseAndLessons = course
     }
 
     return {

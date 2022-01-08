@@ -23,6 +23,12 @@ class Course {
         return found(lesson, this.lessons)
     }
 
+    addLessons(lessons) {
+        lessons.forEach((les) => {
+            this.addLesson(les)
+        })
+    }
+
     addLesson(lesson) {
         add(lesson, this.lessons)
     }

@@ -34,5 +34,17 @@ module.exports = {
   variants: {
     backgroundColor: ['responsive', 'hover', 'focus', 'active']
   },
-  plugins: []
+  plugins: [],
+  extend: {
+
+    spacing: {
+
+      '72': '18rem',
+
+      '84': '21rem',
+
+      '96': '24rem',
+
+    }
+   }
 }
